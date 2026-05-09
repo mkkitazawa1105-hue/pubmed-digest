@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>PubMed論文ダイジェスト 2026-05-05</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #666;
+  --accent: #0a66c2;
+  --rule: #e0e0e0;
+  --card-bg: #f7f9fc;
+  --card-bd: #cdd5dd;
+  --shadow: rgba(0,0,0,0.06);
+  --grade-a-bg: #ffebee;
+  --grade-a-bd: #c62828;
+  --grade-b-bg: #e3f2fd;
+  --grade-b-bd: #1565c0;
+  --grade-c-bg: #f5f5f5;
+  --grade-c-bd: #757575;
+  --read-bg: #efefef;
+  --read-fg: #888;
+  --jp-bg: #fff8e1;
+  --highlight-bg: #fff8e1;
+  --highlight-bd: #ffb300;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --fg: #f0f0f0;
+    --muted: #aaa;
+    --accent: #4ea3ff;
+    --rule: #333;
+    --card-bg: #232425;
+    --card-bd: #3a3a3a;
+    --shadow: rgba(0,0,0,0.4);
+    --grade-a-bg: #4a1f24;
+    --grade-a-bd: #d35d5d;
+    --grade-b-bg: #1f2c4a;
+    --grade-b-bd: #5d8fd3;
+    --grade-c-bg: #2a2a2a;
+    --grade-c-bd: #777;
+    --read-bg: #2a2a2a;
+    --read-fg: #888;
+    --jp-bg: #3a2f00;
+    --highlight-bg: #3a2f00;
+    --highlight-bd: #c08a00;
+  }
+}
+* { box-sizing: border-box; }
+html, body {
+  margin:0; padding:0;
+  background: var(--bg); color: var(--fg);
+  font-family: -apple-system, "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 17px; line-height: 1.7;
+  -webkit-text-size-adjust: 100%;
+}
+.container { max-width: 880px; margin: 0 auto; padding: 16px 20px 100px; }
+.meta { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+h1 { font-size: 24px; margin: 8px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+h2 { font-size: 19px; margin: 28px 0 10px; padding-left: 10px; border-left: 4px solid var(--accent); }
+h3 { font-size: 17px; margin: 20px 0 8px; color: var(--accent); }
+p { margin: 8px 0; }
+a { color: var(--accent); text-decoration: none; word-break: break-all; }
+a:hover { text-decoration: underline; }
+strong { font-weight: 700; }
+
+/* ハイライト */
+.highlight {
+  background: var(--highlight-bg);
+  border-left: 5px solid var(--highlight-bd);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 20px 0 32px 0;
+  font-size: 16px;
+  line-height: 1.8;
+}
+.highlight h2 { margin-top: 0; padding-left: 0; border-left: 0; font-size: 20px; }
+.highlight p { margin: 10px 0; }
+
+/* 論文カード */
+.paper-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-bd);
+  border-left: 5px solid var(--accent);
+  border-radius: 8px;
+  padding: 14px 18px 10px 18px;
+  margin: 14px 0;
+  box-shadow: 0 1px 3px var(--shadow);
+}
+.paper-card[data-grade="A"] { background: var(--grade-a-bg); border-left-color: var(--grade-a-bd); }
+.paper-card[data-grade="B"] { background: var(--grade-b-bg); border-left-color: var(--grade-b-bd); }
+.paper-card[data-grade="C"] { background: var(--grade-c-bg); border-left-color: var(--grade-c-bd); }
+.paper-card[data-state="read"] { background: var(--read-bg); border-left-color: var(--read-fg); opacity: 0.6; }
+.paper-card[data-state="read"] .paper-title::before { content: "✅ 既読 ／ "; color: var(--read-fg); font-weight: bold; }
+.paper-card[data-jp="true"] { box-shadow: 0 0 0 2px var(--jp-bg), 0 1px 3px var(--shadow); }
+
+.paper-title {
+  font-weight: bold; font-size: 16px;
+  margin: 0 0 8px 0; padding-bottom: 8px;
+  border-bottom: 1px dashed var(--rule);
+}
+.grade-badge {
+  display: inline-block; padding: 1px 8px; border-radius: 12px;
+  font-size: 13px; font-weight: bold; margin-right: 6px;
+}
+.grade-A { background: var(--grade-a-bd); color: white; }
+.grade-B { background: var(--grade-b-bd); color: white; }
+.grade-C { background: var(--grade-c-bd); color: white; }
+.jp-flag { background: var(--jp-bg); padding: 0 4px; border-radius: 3px; margin-right: 4px; font-size: 14px; }
+
+.paper-card p { margin: 6px 0; font-size: 15px; }
+
+/* 既読チェックボックス */
+.read-check {
+  float: right;
+  background: rgba(255,255,255,0.6);
+  padding: 2px 8px; border-radius: 4px;
+  font-size: 13px;
+}
+@media (prefers-color-scheme: dark) {
+  .read-check { background: rgba(0,0,0,0.3); }
+}
+.read-check input { vertical-align: middle; transform: scale(1.2); margin-right: 3px; }
+
+/* 過去7日 */
+.past-list {
+  margin: 32px 0 16px 0; padding: 12px 16px;
+  background: var(--card-bg); border-radius: 6px;
+}
+.past-list h3 { margin-top: 0; }
+.past-list ul { padding-left: 20px; }
+
+/* 保存バー */
+.save-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--bg); border-top: 1px solid var(--rule);
+  padding: 10px 16px; display: flex; gap: 12px; align-items: center;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.08); z-index: 100;
+}
+.save-bar button {
+  background: var(--accent); color: white; border: 0; border-radius: 6px;
+  padding: 10px 18px; font-size: 15px; font-weight: bold; cursor: pointer;
+}
+.save-bar .status { font-size: 13px; color: var(--muted); }
+
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .read-check { float: none; display: block; margin-bottom: 6px; }
+}
+
+.footer {
+  margin-top: 40px; padding-top: 16px;
+  border-top: 1px solid var(--rule); color: var(--muted);
+  font-size: 12px; text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="meta">生成: 2026-05-09 21:58 ／ ダイジェスト日: 20260505</div>
+<h1>PubMed論文ダイジェスト 2026-05-05</h1>
+
+<p><strong>📄 PubMed論文ダイジェスト 2026年05月05日</strong></p><p><strong>🔍 検索範囲：</strong>2026年4月28日 〜 2026年5月5日（過去7日間）<br/><strong>📊 ヒット件数：</strong>52件　（A 必読: 11件 / B 関連: 18件 / C 参考: 23件）<br/><strong>🇯🇵 日本人研究：</strong>1件<br/><strong>🎯 検索トピック：</strong>①糖尿病発症予防 ②1型糖尿病治療 ③先進医療機器・デジタルヘルス</p><table><tr><td><p><strong>A 必読 (赤)</strong></p></td><td><p><strong>B 関連 (橙)</strong></p></td><td><p><strong>C 参考 (灰)</strong></p></td></tr><tr><td><p><strong>11件</strong></p></td><td><p><strong>18件</strong></p></td><td><p><strong>23件</strong></p></td></tr></table><p><strong>🇯🇵 日本人研究フラグ</strong></p><ul><li>PMID 42078491｜Trends in accuracy management of continuous glucose monitoring systems. (Diabetol Int)</li></ul><p><strong>🩺 糖尿病発症予防（Prevention）</strong></p><p><strong>【A 必読】</strong> [Cohort]</p><p><strong>Trends in type 2 diabetes incidence in a disadvantaged neighbourhood before and during implementation of complex community-based health interventions.</strong></p><p>📚 BMJ Open  ｜  PMID: 42082232  ｜  DOI: 10.1136/bmjopen-2025-111667  ｜  2026-05-04</p><p><em>👥 Olesen K, Stougård M, Rønn PF, Bloch P  (Steno Diabetes Center Copenhagen)</em></p><p><strong>📝 </strong>Tingbjerg Changing Diabetes (Denmark, 2003-2022, ~7000 residents). Pre-2015 IRR almost 2-fold higher than national. Post-2015: decline in Tingbjerg vs increase nationally; rates almost equal by 2022.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42082232/</p><p><strong>【A 必読】</strong> [Meta-analysis]</p><p><strong>Effectiveness of Text Messaging Interventions on BMI Among Adults With Prediabetes: Systematic Review and Meta-Analysis.</strong></p><p>📚 JMIR Mhealth Uhealth  ｜  PMID: 42060551  ｜  DOI: 10.2196/78521  ｜  2026-04-30</p><p><em>👥 Wong AKC, Choi SY, Cheng TTY, Cheng CCY et al.  (Hong Kong Polytechnic University)</em></p><p><strong>📝 </strong>Meta-analysis 7 RCTs, n=4632. SMS text messaging vs standard care for prediabetes: BMI MD -0.17 kg/m² (95%CI -0.85 to 0.25, I²=32%). HbA1c MD -0.05% (95%CI -0.17 to 0.07, I²=89%). Diabetes incidence OR 0.84 (95%CI 0.63-1.12, I²=51%, n=3515). No meaningful effect.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42060551/</p><p><strong>【A 必読】</strong> [Cohort]</p><p><strong>Associations of Cumulative Burden of Prehypertension, Prediabetes and Predyslipidemia With All-Cause and Cardiovascular Disease Mortality: A Retrospective Cohort Study.</strong></p><p>📚 J Clin Hypertens  ｜  PMID: 42059349  ｜  DOI: 10.1111/jch.70264  ｜  2026-05</p><p><em>👥 Meng J, Wang G, Wang W, Wu J  (Zhejiang University)</em></p><p><strong>📝 </strong>NHANES 1999-2018, n=11,986 adults. Cumulative preclinical conditions associated with mortality dose-response: 1 cond HR 1.87 (95%CI 1.38-2.52), 2 conds HR 2.49 (1.80-3.44), 3 conds HR 2.62 (1.76-3.90) for all-cause; CVD mortality 3.09→3.89→4.20.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42059349/</p><p><strong>【B 関連あり】</strong> [Cohort]</p><p><strong>Secular Trend in Glycaemic Management in Type 2 Diabetes Patients With and Without Cirrhosis Between 2000 and 2023: A Territory-Wide Cohort Study.</strong></p><p>📚 Aliment Pharmacol Ther  ｜  PMID: 42083834  ｜  DOI: 10.1111/apt.70705  ｜  2026-05-05</p><p><em>👥 Wang MY, Song SJ, Peng N, Wong GL et al.  (Hong Kong)</em></p><p><strong>📝 </strong>Glycaemic control improved in T2DM patients in Hong Kong cohort 2000-2023 (n=1,206,233). Compensated cirrhosis group had best HbA1c&lt;7% achievement (49.3% to 75.8%). Insulin predominant in decompensated cirrhosis with rising hypoglycaemia.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42083834/</p><p><strong>💉 1型糖尿病治療（Type 1 Diabetes）</strong></p><p><strong>【A 必読】</strong> [Meta-analysis]</p><p><strong>Efficacy and Safety of T Cell-Targeted Immunotherapy in Newly Diagnosed Type 1 Diabetes: A Systematic Review and Meta-Analysis.</strong></p><p>📚 Diabetes Obes Metab  ｜  PMID: 42082201  ｜  DOI: 10.1111/dom.70829  ｜  2026-05-04</p><p><em>👥 Wang Y, Zhou Y, Zhu M, Wang X et al.  (Central South University, Changsha, China)</em></p><p><strong>📝 </strong>21 RCTs, n=1970. T cell-targeted immunotherapy increased C-peptide AUC: SMD 0.38 (95%CI 0.19-0.57, p&lt;0.001) at 6mo, 0.41 at 12mo, 0.48 at 18mo, 0.49 at 24mo. Reduced HbA1c and insulin dose. Younger age (&lt;18y), worse baseline metabolic status had greater early efficacy.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42082201/</p><p><strong>【A 必読】</strong> [Cohort]</p><p><strong>High-Amplitude and Prolonged Glucose Excursions as a Key Determinant of Discordance Between Glucose Management Indicator and Glycated Hemoglobin in Type 1 Diabetes.</strong></p><p>📚 Diabetes Care  ｜  PMID: 42081254  ｜  DOI: 10.2337/dc25-2820  ｜  2026-05-04</p><p><em>👥 Park S, Cho SH, Kim S, Park SH et al.  (Samsung Medical Center, Seoul, Korea)</em></p><p><strong>📝 </strong>n=611 T1D adults, 90-day CGM paired with HbA1c (Korean cohort). Excursions ≥250 mg/dL &amp; time-to-peak ≥90 min associated with higher uGMI/HbA1c ratio (β=0.174, 95%CI 0.147-0.201, p&lt;0.001). GRID-derived excursion metrics modify GMI/uGMI relationship with albuminuria/TyG index.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42081254/</p><p><strong>【A 必読】</strong> [Cohort]</p><p><strong>Natural history of a pediatric cohort with islet autoantibody positivity: a single-center retrospective cohort study.</strong></p><p>📚 J Endocr Soc  ｜  PMID: 42063580  ｜  DOI: 10.1210/jendso/bvag087  ｜  2026-04-29</p><p><em>👥 Casalini E, Puliti D, Piccini B, Cerutti M et al.  (Meyer Children's Hospital, Florence)</em></p><p><strong>📝 </strong>n=106 AAB-positive pediatric patients (Italy 2012-2025). 19/106 progressed to stage 3 T1D over median 4y. 5-yr cumulative risk 16.6% (95%CI 10.0-26.9). Multiple AAB: 40.4% vs single AAB 8.3% (p=0.0002). GAD positivity associated 5-yr risk 25.7% vs 2.8% (p=0.0063). No DKA at diagnosis among monitored patients.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42063580/</p><p><strong>【A 必読】</strong> [Cohort]</p><p><strong>Tubed or tubeless insulin pumps? A retrospective real-world analysis of national French health data.</strong></p><p>📚 BMJ Open Diabetes Res Care  ｜  PMID: 42061971  ｜  DOI: 10.1136/bmjdrc-2025-005860  ｜  2026-04-30</p><p><em>👥 Hanaire H, Vimont A, Bonin A, Guigand G et al.  (Toulouse University Hospital)</em></p><p><strong>📝 </strong>French National Health Data 2016-2021. n=61,251 T1D pump initiators. Tubeless higher persistence vs tubed: HR 0.60 (95%CI 0.58-0.61, p&lt;0.0001). 40% lower discontinuation risk. Adjusted HR 0.59 (95%CI 0.57-0.61). Fewer therapy changes within 12 mo.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42061971/</p><p><strong>【A 必読】</strong> [Review]</p><p><strong>C-Peptide Provides Critical Contextual Insight Into Elevated Glucose Values During Progression to Type 1 Diabetes.</strong></p><p>📚 Diabetes Care  ｜  PMID: 42060373  ｜  DOI: 10.2337/dci26-0022  ｜  2026-04-30</p><p><em>👥 Sims EK, Skyler JS, Jacobsen LM, Ismail HM et al.  (Indiana University, Multi-center US)</em></p><p><strong>📝 </strong>Perspective/review. Argues for adding C-peptide to islet autoantibody+glycemia staging system for T1D. Could improve prediction of progression to clinical disease and identify responses to disease-modifying therapies.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42060373/</p><p><strong>【A 必読】</strong> [Review]</p><p><strong>Considerations for the clinical use of teplizumab in stage 2 Type 1 diabetes: A Consensus Statement from the British Society of Paediatric Endocrinology and Diabetes (BSPED) and the Association of British Clinical Diabetologists (ABCD).</strong></p><p>📚 Diabet Med  ｜  PMID: 42051156  ｜  DOI: 10.1111/dme.70329  ｜  2026-04-29</p><p><em>👥 Dias RP, Marcovecchio ML, Willemsen RH, Campbell F et al.  (BSPED+ABCD UK)</em></p><p><strong>📝 </strong>BSPED+ABCD UK consensus statement following 2025 MHRA approval of teplizumab (anti-CD3 mAb) for delaying Stage 2→3 T1D. Recommendations on selection, screening, monitoring, side-effect management.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42051156/</p><p><strong>【A 必読】</strong> [RCT]</p><p><strong>Safety and Effectiveness of MiniMed 780G Advanced Hybrid Closed-Loop Use with Ultrarapid Insulin Lispro-AABC in Pediatric and Adult Type 1 Diabetes.</strong></p><p>📚 Diabetes Technol Ther  ｜  PMID: 42050782  ｜  DOI: 10.1177/15209156261444994  ｜  2026-04-28</p><p><em>👥 Akturk HK, Nally LM, Lal RA, Warren ML et al.  (Multi-site US (Barbara Davis, Yale, Stanford, etc.))</em></p><p><strong>📝 </strong>19-site single-arm trial. n=101 pediatric + n=110 adult T1D. URLi (Lyumjev) + MiniMed 780G AHCL for 3mo. TIR significantly greater than thresholds. Adult HbA1c 7.4±0.9% → 6.9±0.6% (p&lt;0.001), pediatric unchanged. Pediatric TIRΔ 17.4%, adult TIRΔ 10.6% vs run-in (p&lt;0.001). No severe hypoglycemia or DKA.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42050782/</p><p><strong>【B 関連あり】</strong> [Other]</p><p><strong>Effectiveness and safety of the MiniMed 780G in newly diagnosed adolescents with type 1 diabetes: an observational real-world study.</strong></p><p>📚 Endocrine  ｜  PMID: 42081020  ｜  DOI: 10.1007/s12020-026-04646-z  ｜  2026-05-04</p><p><em>👥 Mameli C, Sodero R, Gaudenzi F, Redaelli FC et al.  (Vittore Buzzi Children's Hospital, Milan)</em></p><p><strong>📝 </strong>Observational real-world study of MiniMed 780G AHCL in newly diagnosed T1D adolescents. (Abstract not available in PubMed.)</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42081020/</p><p><strong>【B 関連あり】</strong> [Cross-sectional]</p><p><strong>Developmental stages and exercise timing in relation to fear of hypoglycemia and quality of life in type 1 diabetes.</strong></p><p>📚 Endocrine  ｜  PMID: 42068470  ｜  DOI: 10.1007/s12020-026-04632-5  ｜  2026-05-02</p><p><em>👥 Codella R, Bisio A, Gotti D, Bassi M et al.  (University of Milan, Italy)</em></p><p><strong>📝 </strong>Cross-sectional, n=100 insulin pump T1D outpatients. Age group associated with QoL (p=0.037) and fear of hypoglycemia (FH; p&lt;0.001, large effect). Evening exercise associated with higher FH (p=0.047). Suggests developmentally tailored exercise counselling.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42068470/</p><p><strong>【B 関連あり】</strong> [Cohort]</p><p><strong>Real-World Impact of a National Funding-Driven Transition Between Automated Insulin Delivery Systems in Pediatric Type 1 Diabetes.</strong></p><p>📚 Diabetes Technol Ther  ｜  PMID: 42068144  ｜  DOI: 10.1177/15209156261447721  ｜  2026-05-02</p><p><em>👥 Walker M, Thomas A, Allison H, Ferguson J et al.  (University of Otago, New Zealand)</em></p><p><strong>📝 </strong>NZ pediatric AID transition (Medtronic→Tandem Control-IQ/YpsoPump CamAPS FX) after PHARMAC funding change Oct 2024. n=79 (mean 11.6±3.0y). HbA1c decreased 0.24% (7.14±0.79% → 6.87±0.86%; p=0.0012). No DKA or level 3 hypoglycemia.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42068144/</p><p><strong>【B 関連あり】</strong> [Review]</p><p><strong>Digital health interventions for improving mental health outcomes and wellbeing for adults with diabetes: A systematic review.</strong></p><p>📚 Patient Educ Couns  ｜  PMID: 42066645  ｜  DOI: 10.1016/j.pec.2026.109659  ｜  2026-04-28</p><p><em>👥 Saldanha A, Boggis A, Serlachius AS  (University of Auckland)</em></p><p><strong>📝 </strong>Systematic review (n=13 studies). Digital interventions show promise for self-efficacy and QoL in adults with diabetes. AI-based tools potential for diabetes distress reduction; CBT-based for anxiety. No consistent depression improvement.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42066645/</p><p><strong>【B 関連あり】</strong> [Review]</p><p><strong>Why glycemic control remains suboptimal in type 1 diabetes in the era of advanced technologies?</strong></p><p>📚 Diabetes Metab  ｜  PMID: 42061704  ｜  DOI: 10.1016/j.diabet.2026.101763  ｜  2026-04-28</p><p><em>👥 Joubert M  (Caen University Hospital, France)</em></p><p><strong>📝 </strong>Narrative review. T1D glycemic control limited by pathophysiology (β-cell deficiency, counterregulation, insulin resistance), behavioral (bolusing, carb-counting, technology use), and psychosocial (eating disorders, depression, SES) factors. Calls for integrated patient-centered care beyond technology.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42061704/</p><p><strong>【B 関連あり】</strong> [RCT]</p><p><strong>Supporting Parents of Young Children With Type 1 Diabetes Through Telehealth: Randomized Controlled Trial of the Reducing Emotional Distress for Childhood Hypoglycemia in Parents Intervention.</strong></p><p>📚 JMIR Pediatr Parent  ｜  PMID: 42060549  ｜  DOI: 10.2196/86616  ｜  2026-04-30</p><p><em>👥 Patton SR, Kahhan N, O'Donnell H, Williams DD et al.  (Nemours Children's Clinic, USA)</em></p><p><strong>📝 </strong>Multisite RCT n=183 parents of young T1D children. REDCHiP video-telehealth (10 sessions) vs ATTN. Treatment-slope effects favored REDCHiP but ns for FH (p=0.09) or diabetes distress (p=0.06). REDCHiP: significantly less elevated diabetes distress (p=0.02). Child HbA1c small ns reduction (p=0.06).</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42060549/</p><p><strong>【B 関連あり】</strong> [Cross-sectional]</p><p><strong>Quality of Life and Humanistic Burden of Adults with Type 1 Diabetes with Recurrent Severe Hypoglycemic Events and Impaired Awareness of Hypoglycemia Using a Continuous Glucose Monitor.</strong></p><p>📚 Diabetes Ther  ｜  PMID: 42060213  ｜  DOI: 10.1007/s13300-026-01869-1  ｜  2026-04-30</p><p><em>👥 Boateng-Kuffour A, Kelly CS, Nguyen HT, Li N et al.  (Vertex Pharmaceuticals + T1D Exchange)</em></p><p><strong>📝 </strong>Cross-sectional online survey US T1D CGM users. Recurrent SHE+IAH cohort n=174 (mean 8.6 SHEs/year) vs No SHE+No IAH n=689. Recurrent SHE+IAH: higher fear of hypoglycemia, diabetes distress, lower QoL, reduced productivity (all p&lt;0.001). Highlights unmet need despite CGM.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42060213/</p><p><strong>【B 関連あり】</strong> [RCT]</p><p><strong>Effect of statins and ACE inhibitors on the metabolome in the Adolescent Type 1 Diabetes cardio-renal Intervention Trial (AdDIT) cohort.</strong></p><p>📚 Sci Rep  ｜  PMID: 42056188  ｜  DOI: 10.1038/s41598-026-50044-w  ｜  2026-04-29</p><p><em>👥 Prampolini B, Giton A, Frassineti S, Donaghue KC et al.  (University of Modena, UCL)</em></p><p><strong>📝 </strong>AdDIT cohort: 341 T1D adolescents + 81 controls. Statins attenuated LDL-C rise (1.90 vs 2.38 mmol/L). ACE-I weak HDL-C preservation effect (1.50 vs 1.39 mmol/L). HbA1c associated with atherogenic lipidome. Supports cardioprotective role.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42056188/</p><p><strong>【B 関連あり】</strong> [Cohort]</p><p><strong>Hypoglycemia Occurrence and Risk Factors in Insulin Independent Patients After Total Pancreatectomy With Islet Autotransplantation.</strong></p><p>📚 Clin Transplant  ｜  PMID: 42053924  ｜  DOI: 10.1111/ctr.70549  ｜  2026-05</p><p><em>👥 Hassaan A, Eaton A, Jagadesh N, Trikudanathan G et al.  (University of Minnesota)</em></p><p><strong>📝 </strong>University of Minnesota TPIAT 2010-2023, n=503; 156 (31%) achieved insulin independence. Of these, 45 (28.8%) had hypoglycemia, 32 (20.5%) level 2 (&lt;54 mg/dL); 25% severe requiring assistance. Mean 2.4±2.2y posttransplant. Risk factors: older age (p=0.036), higher BMI (p=0.016), malabsorptive disorders (p&lt;0.001).</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42053924/</p><p><strong>📱 先進医療機器・デジタルヘルス（CGM/AID/Digital Health）</strong></p><p><strong>【A 必読】</strong> [RCT]</p><p><strong>Virtual Weight Management and Continuous Glucose Monitoring in Patients With Type 2 Diabetes: A Randomized Controlled Trial.</strong></p><p>📚 Obesity (Silver Spring)  ｜  PMID: 42047631  ｜  DOI: 10.1002/oby.70204  ｜  2026-04-28</p><p><em>👥 Katzmarzyk PT, Drews K, Ard JD, McLaughlin TL et al.  (Pennington Biomedical/Stanford/WW Intl)</em></p><p><strong>📝 </strong>RCT, n=151 (INT=75, UC=76) overweight/obese T2D adults. INT: behavioral weight management + CGM (Abbott Libre); UC: dietitian session. 6-mo HbA1c: INT -0.87% vs UC -0.41% (Δ -0.46%, 95%CI -0.89 to -0.03, p=0.037). INT greater body weight reduction (-3.2%, 95%CI -4.9 to -1.5, p&lt;0.001). Clinical Trials NCT05935514.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42047631/</p><p><strong>【B 関連あり】</strong> [Cross-sectional]</p><p><strong>Postprandial glucose profiles may reflect heterogeneity in insulin secretion and sensitivity in type 2 diabetes.</strong></p><p>📚 Metabolism  ｜  PMID: 42082049  ｜  DOI: 10.1016/j.metabol.2026.156626  ｜  2026-05-02</p><p><em>👥 Giosuè A, Skantze V, Testa R, D'Abbronzo G et al.  (Federico II University of Naples)</em></p><p><strong>📝 </strong>n=100 T2D adults, CGM postprandial response clustering. 3 clusters identified. Cluster 1 (n=19) lowest β-cell function (HOMA2-B 77.4 vs 105.0) and highest insulin resistance (HOMA-IR 7.94 vs 4.84) vs Cluster 3.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42082049/</p><p><strong>【B 関連あり】</strong> [Cohort]</p><p><strong>Unravelling dialysis-related dysglycaemia: Longitudinal insights from continuous glucose monitoring.</strong></p><p>📚 Diabet Med  ｜  PMID: 42081714  ｜  DOI: 10.1111/dme.70344  ｜  2026-05-04</p><p><em>👥 Habte-Asres HH, Agbabiaka A, Rehan R, Wheeler DC et al.  (King's College London)</em></p><p><strong>📝 </strong>n=125 hemodialysis patients (mean 63.7y, 54.5% men). TIR baseline 51.6%→6mo 56.6% (+5.09%, p=0.014)→12mo 50.5% (not sustained). TBR small increase 6→12mo (+1.61%, p=0.002). Hypoglycemia burden increased over follow-up.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42081714/</p><p><strong>【B 関連あり】</strong> [Review]<strong> 🇯🇵</strong></p><p><strong>Trends in accuracy management of continuous glucose monitoring systems.</strong></p><p>📚 Diabetol Int  ｜  PMID: 42078491  ｜  DOI: 10.1007/s13340-026-00901-w  ｜  2026-04-30</p><p><em>👥 Torimoto K, Okada Y  (University of Occupational and Environmental Health, Kitakyushu, Japan)</em></p><p><strong>📝 </strong>Mini-review of CGM accuracy management: technological innovation (multi-analyte/non-invasive sensors, AI signal processing); regulatory frameworks (FDA iCGM, EU eCGM); transparency demands. Outlines analytical/clinical/trend accuracy and precision dimensions.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42078491/</p><p><strong>【B 関連あり】</strong> [Other]</p><p><strong>Augmenting ultrasound for continuous glucose monitoring via a wearable acoustically readable microneedle patch.</strong></p><p>📚 Sci Adv  ｜  PMID: 42066084  ｜  DOI: 10.1126/sciadv.aec3209  ｜  2026-05-01</p><p><em>👥 Zhang W, Xu J, Li X, Jang Y et al.  (Hong Kong Polytechnic University)</em></p><p><strong>📝 </strong>Enzyme-free wearable acoustically readable microneedle patch (ARMPatch) using glucose-responsive hydrogel + ultrasound. 56-day stability, 30-60 min response. In vivo 7-day animal study. Novel non-enzymatic CGM.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42066084/</p><p><strong>【B 関連あり】</strong> [Other]</p><p><strong>Clinical Validation on Healthy Humans of a Portable Non-invasive Continuous Glucose Monitor Based on Transdermal Band-Pass Raman Spectroscopy.</strong></p><p>📚 J Diabetes Sci Technol  ｜  PMID: 42060693  ｜  DOI: 10.1177/19322968261445056  ｜  2026-04-30</p><p><em>👥 Bresci A, Kim Y, Jue M, Foglia LP et al.  (MIT)</em></p><p><strong>📝 </strong>Pilot n=6 healthy humans during OGTT. Non-invasive Raman BPR-CGM MARD 11.34±1.96% vs needle CGM 10.42±2.46% and 12.93±4.69% (statistically indistinguishable). 100% Parkes zone A/B. Proof of concept for non-invasive CGM.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42060693/</p><p><strong>【B 関連あり】</strong> [Cohort]</p><p><strong>Continuous Glucose Monitoring for Personalized Nutrition in Real-World Vively App Users: Retrospective Observational Study.</strong></p><p>📚 JMIR Hum Factors  ｜  PMID: 42054670  ｜  DOI: 10.2196/80734  ｜  2026-04-29</p><p><em>👥 Jospe MR, Richardson KM, Schembre SM  (Georgetown Lombardi)</em></p><p><strong>📝 </strong>Vively app + Abbott FreeStyle Libre CGM. n=7647 users (69.3% female, mean 44.4y, BMI 27.8). Median CGM wear 15d (IQR 14-30). 91.7% logged food (median 47 entries/12d). Food logging dropped 63.2%→2.4% post-sensor removal. Higher baseline glucose: longer CGM wear (IRR 1.15) but fewer food logging days (IRR 0.96).</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42054670/</p><p><strong>【B 関連あり】</strong> [Other]</p><p><strong>Time in range during caloric restriction in type 2 diabetes with obesity.</strong></p><p>📚 J Diabetes Investig  ｜  PMID: 42050892  ｜  DOI: 10.1111/jdi.70308  ｜  2026-04-28</p><p><em>👥 Kim J, Lee J, Kim MK, Hong O et al.  (Catholic University of Korea)</em></p><p><strong>📝 </strong>Korean 12-week single-arm intervention. Median age 46y, BMI 29.2, HbA1c 6.6%. TIR improved 84.3%→90.3% (p=0.041). BMI 29.3→26.7 kg/m² (p&lt;0.001). C-peptide index showed stronger association with TIR than Matsuda index, especially with higher insulin sensitivity (p=0.011).</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42050892/</p><p><strong>【B 関連あり】</strong> [Review]</p><p><strong>Evaluating once-weekly insulin efsitora alfa for adults with type 2 diabetes.</strong></p><p>📚 Expert Opin Pharmacother  ｜  PMID: 42048049  ｜  DOI: 10.1080/14656566.2026.2667324  ｜  2026-05-04</p><p><em>👥 Ramachandran A, Batra J, Desouza C  (University of Nebraska)</em></p><p><strong>📝 </strong>Review on once-weekly basal insulin efsitora alfa (Fc-fusion). QWINT phase 3: non-inferior glycemic efficacy vs once-daily basal insulin in T2D. Reduced injection burden. Severe hypoglycemia rates low.</p><p>🔗 https://pubmed.ncbi.nlm.nih.gov/42048049/</p><p><strong>📚 C評価論文（参考）</strong>  ※基礎研究・周辺領域・小規模パイロット等</p><table><tr><td><p><strong>PMID</strong></p></td><td><p><strong>タイトル / 雑誌</strong></p></td><td><p><strong>理由</strong></p></td></tr><tr><td><p>42083116</p></td><td><p>Poor Glycemic Control in East Africa: Prevalence, Risk Factors and Public Health...<em> (Endocrinol Diabetes Metab)</em></p></td><td><p>レビュー</p></td></tr><tr><td><p>42082197</p></td><td><p>A Novel Method to Evaluate Insulin Sensitivity by Combining Continuous Glucose M...<em> (Diabetes Obes Metab)</em></p></td><td><p>小規模</p></td></tr><tr><td><p>42081165</p></td><td><p>Diabetes and cancer: glucose control impact on survival and tumor outcomes.<em> (Rev Endocr Metab Disord)</em></p></td><td><p>レビュー</p></td></tr><tr><td><p>42081016</p></td><td><p>From disease heterogeneity to precision therapy in type 1 diabetes mellitus.<em> (Endocrine)</em></p></td><td><p>レビュー</p></td></tr><tr><td><p>42080151</p></td><td><p>Accuracy of a smartphone-based 3D imaging tool for height measurement and stunti...<em> (Lancet Reg Health Southeast Asia)</em></p></td><td><p>周辺</p></td></tr><tr><td><p>42077840</p></td><td><p>Layered Enzymatic Biosensor Decorated with Prussian Blue Structures for Continuo...<em> (ACS Omega)</em></p></td><td><p>周辺</p></td></tr><tr><td><p>42070987</p></td><td><p>Continuous Glucose Monitoring Metrics Are Associated With Metabolic Dysfunction-...<em> (Pediatr Obes)</em></p></td><td><p>小規模</p></td></tr><tr><td><p>42070230</p></td><td><p>A Viscous DES-AAV-Foxo1 Delivery System With High Transfection Efficiency for th...<em> (Adv Sci)</em></p></td><td><p>基礎</p></td></tr><tr><td><p>42070103</p></td><td><p>Human and mouse regenerative macrophages enhance beta cell survival, function, a...<em> (Islets)</em></p></td><td><p>基礎</p></td></tr><tr><td><p>42067729</p></td><td><p>Effects of short-term metyrapone treatment on glycaemic control in patients with...<em> (Endocrine)</em></p></td><td><p>小規模</p></td></tr><tr><td><p>42065808</p></td><td><p>The Effect of Acute Aerobic Exercise On the Time Spent in Hypoglycaemia After Ba...<em> (Obes Surg)</em></p></td><td><p>小規模</p></td></tr><tr><td><p>42063297</p></td><td><p>Imputation of Missing Continuous Glucose Monitor Data.<em> (J Diabetes Sci Technol)</em></p></td><td><p>周辺</p></td></tr><tr><td><p>42059288</p></td><td><p>Predicting Time to Glycemic Stability in Hospitalized Type 2 Diabetes Patients U...<em> (Endocr Connect)</em></p></td><td><p>小規模</p></td></tr><tr><td><p>42054697</p></td><td><p>The Current Landscape of Remote Patient Monitoring Regarding Diabetes Mellitus a...<em> (JMIR Res Protoc)</em></p></td><td><p>周辺</p></td></tr><tr><td><p>42054402</p></td><td><p>Artemether ameliorates type 1 diabetic liver injury alongside the associated def...<em> (PLoS One)</em></p></td><td><p>基礎</p></td></tr><tr><td><p>42051132</p></td><td><p>Has the time come for a remission definition in type 1 diabetes? A functional pe...<em> (Diabet Med)</em></p></td><td><p>周辺</p></td></tr><tr><td><p>42050682</p></td><td><p>Extracellular vesicles inherit lactate from aggregated MSCs to alleviate type 1 ...<em> (J Nanobiotechnology)</em></p></td><td><p>基礎</p></td></tr><tr><td><p>42049715</p></td><td><p>Sex- and adipose depot-specific glucose metabolism following carbohydrate-enrich...<em> (Nutr Diabetes)</em></p></td><td><p>小規模</p></td></tr><tr><td><p>42048113</p></td><td><p>Nocturnal tissue glycemia is associated with cortisol rise in the morning in you...<em> (Endocr Res)</em></p></td><td><p>周辺</p></td></tr><tr><td><p>42047990</p></td><td><p>Smart nanomaterials enabling drug delivery and glucose monitoring for diabetes m...<em> (Discov Nano)</em></p></td><td><p>レビュー</p></td></tr><tr><td><p>42047131</p></td><td><p>Evaluating effect of Insulin therapy on Quality-of-life among Type 2 Diabetes Pa...<em> (Clin Ter)</em></p></td><td><p>周辺</p></td></tr><tr><td><p>42044980</p></td><td><p>Continuous Glucose Monitoring-Driven Personalization of Cornstarch Therapy in Gl...<em> (Yonsei Med J)</em></p></td><td><p>周辺</p></td></tr><tr><td><p>42040753</p></td><td><p>In Vitro Evaluation of Necrostatin-1 Microparticles for Limiting Stress-induced ...<em> (Transplant Direct)</em></p></td><td><p>基礎</p></td></tr></table>
+<div class="past-list"><h3>📅 過去のダイジェスト</h3><ul><li><a href="20260501.html">2026-05-01</a></li><li><a href="20260502.html">2026-05-02</a></li><li><a href="20260503.html">2026-05-03</a></li><li><a href="20260504.html">2026-05-04</a></li><li><a href="20260506.html">2026-05-06</a></li><li><a href="20260507.html">2026-05-07</a></li><li><a href="20260508.html">2026-05-08</a></li></ul></div>
+<div class="footer">— PubMed論文ダイジェスト ／ チェックボックス＝既読、下のボタンで状態保存 —</div>
+</div>
+<div class="save-bar">
+  <button id="save-btn">📥 既読状態を保存（JSON）</button>
+  <span class="status" id="save-status">—</span>
+  <span class="status" style="margin-left:auto">20260505</span>
+</div>
+<script>
+(function() {
+  const BRIEFING_DATE = '20260505';
+  const STORAGE_KEY = 'pubmed_marks';
+  function load() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; } }
+  function save(m) { localStorage.setItem(STORAGE_KEY, JSON.stringify(m)); }
+  function apply() {
+    const marks = load();
+    document.querySelectorAll('.paper-card').forEach(card => {
+      const pmid = card.dataset.pmid;
+      const cb = card.querySelector('input[type=checkbox][data-kind="read"]');
+      if (marks[pmid] === 'read') {
+        card.dataset.state = 'read';
+        if (cb) cb.checked = true;
+      } else {
+        delete card.dataset.state;
+        if (cb) cb.checked = false;
+      }
+    });
+    updateCount();
+  }
+  function updateCount() {
+    const marks = load();
+    const total = document.querySelectorAll('.paper-card').length;
+    const read = Object.values(marks).filter(v => v === 'read').length;
+    const status = document.getElementById('save-status');
+    if (status) status.textContent = '既読:' + read + ' ／ 全' + total + '件';
+  }
+  document.addEventListener('change', e => {
+    if (e.target.type !== 'checkbox' || !e.target.dataset.kind) return;
+    const card = e.target.closest('.paper-card');
+    if (!card) return;
+    const pmid = card.dataset.pmid;
+    const marks = load();
+    if (e.target.checked) marks[pmid] = 'read';
+    else delete marks[pmid];
+    save(marks);
+    apply();
+  });
+  function downloadJSON() {
+    const marks = load();
+    const data = { saved_at: new Date().toISOString(), briefing_date: BRIEFING_DATE, marks: marks };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'pubmed_state_' + BRIEFING_DATE + '.json'; a.click();
+    URL.revokeObjectURL(url);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    apply();
+    const btn = document.getElementById('save-btn');
+    if (btn) btn.addEventListener('click', downloadJSON);
+  });
+})();
+</script>
+</body>
+</html>
