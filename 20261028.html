@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>PubMed論文ダイジェスト 2026-10-28</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #666;
+  --accent: #0a66c2;
+  --rule: #e0e0e0;
+  --card-bg: #f7f9fc;
+  --card-bd: #cdd5dd;
+  --shadow: rgba(0,0,0,0.06);
+  --grade-a-bg: #ffebee;
+  --grade-a-bd: #c62828;
+  --grade-b-bg: #e3f2fd;
+  --grade-b-bd: #1565c0;
+  --grade-c-bg: #f5f5f5;
+  --grade-c-bd: #757575;
+  --read-bg: #efefef;
+  --read-fg: #888;
+  --jp-bg: #fff8e1;
+  --highlight-bg: #fff8e1;
+  --highlight-bd: #ffb300;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --fg: #f0f0f0;
+    --muted: #aaa;
+    --accent: #4ea3ff;
+    --rule: #333;
+    --card-bg: #232425;
+    --card-bd: #3a3a3a;
+    --shadow: rgba(0,0,0,0.4);
+    --grade-a-bg: #4a1f24;
+    --grade-a-bd: #d35d5d;
+    --grade-b-bg: #1f2c4a;
+    --grade-b-bd: #5d8fd3;
+    --grade-c-bg: #2a2a2a;
+    --grade-c-bd: #777;
+    --read-bg: #2a2a2a;
+    --read-fg: #888;
+    --jp-bg: #3a2f00;
+    --highlight-bg: #3a2f00;
+    --highlight-bd: #c08a00;
+  }
+}
+* { box-sizing: border-box; }
+html, body {
+  margin:0; padding:0;
+  background: var(--bg); color: var(--fg);
+  font-family: -apple-system, "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 17px; line-height: 1.7;
+  -webkit-text-size-adjust: 100%;
+}
+.container { max-width: 880px; margin: 0 auto; padding: 16px 20px 100px; }
+.meta { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+h1 { font-size: 24px; margin: 8px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+h2 { font-size: 19px; margin: 28px 0 10px; padding-left: 10px; border-left: 4px solid var(--accent); }
+h3 { font-size: 17px; margin: 20px 0 8px; color: var(--accent); }
+p { margin: 8px 0; }
+a { color: var(--accent); text-decoration: none; word-break: break-all; }
+a:hover { text-decoration: underline; }
+strong { font-weight: 700; }
+
+/* ハイライト */
+.highlight {
+  background: var(--highlight-bg);
+  border-left: 5px solid var(--highlight-bd);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 20px 0 32px 0;
+  font-size: 16px;
+  line-height: 1.8;
+}
+.highlight h2 { margin-top: 0; padding-left: 0; border-left: 0; font-size: 20px; }
+.highlight p { margin: 10px 0; }
+
+/* 論文カード：タイトルのみカード装飾、本文はプレーン段落 */
+.paper-card {
+  margin: 14px 0 4px 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.paper-title {
+  background: var(--card-bg);
+  border: 1px solid var(--card-bd);
+  border-left: 5px solid var(--accent);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 0 0 6px 0;
+  font-weight: bold; font-size: 16px;
+}
+.paper-card[data-grade="A"] .paper-title { background: var(--grade-a-bg); border-left-color: var(--grade-a-bd); }
+.paper-card[data-grade="B"] .paper-title { background: var(--grade-b-bg); border-left-color: var(--grade-b-bd); }
+.paper-card[data-grade="C"] .paper-title { background: var(--grade-c-bg); border-left-color: var(--grade-c-bd); }
+.paper-card[data-state="read"] .paper-title { background: var(--read-bg); border-left-color: var(--read-fg); }
+.paper-card[data-state="read"] .paper-title::before { content: "✅ 既読 ／ "; color: var(--read-fg); font-weight: bold; }
+.paper-card[data-state="read"] p:not(.paper-title) { opacity: 0.55; }
+.paper-card[data-jp="true"] .paper-title { box-shadow: 0 0 0 2px var(--jp-bg); }
+.paper-card p:not(.paper-title) {
+  margin: 6px 0 6px 14px;
+  font-size: 15px;
+}
+.grade-badge {
+  display: inline-block; padding: 1px 8px; border-radius: 12px;
+  font-size: 13px; font-weight: bold; margin-right: 6px;
+}
+.grade-A { background: var(--grade-a-bd); color: white; }
+.grade-B { background: var(--grade-b-bd); color: white; }
+.grade-C { background: var(--grade-c-bd); color: white; }
+.jp-flag { background: var(--jp-bg); padding: 0 4px; border-radius: 3px; margin-right: 4px; font-size: 14px; }
+
+.paper-card p { margin: 6px 0; font-size: 15px; }
+
+/* 既読チェックボックス */
+.read-check {
+  float: right;
+  background: rgba(255,255,255,0.6);
+  padding: 2px 8px; border-radius: 4px;
+  font-size: 13px;
+}
+@media (prefers-color-scheme: dark) {
+  .read-check { background: rgba(0,0,0,0.3); }
+}
+.read-check input { vertical-align: middle; transform: scale(1.2); margin-right: 3px; }
+
+/* 過去7日 */
+.past-list {
+  margin: 32px 0 16px 0; padding: 12px 16px;
+  background: var(--card-bg); border-radius: 6px;
+}
+.past-list h3 { margin-top: 0; }
+.past-list ul { padding-left: 20px; }
+
+/* 保存バー */
+.save-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--bg); border-top: 1px solid var(--rule);
+  padding: 10px 16px; display: flex; gap: 12px; align-items: center;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.08); z-index: 100;
+}
+.save-bar button {
+  background: var(--accent); color: white; border: 0; border-radius: 6px;
+  padding: 10px 18px; font-size: 15px; font-weight: bold; cursor: pointer;
+}
+.save-bar .status { font-size: 13px; color: var(--muted); }
+
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .read-check { float: none; display: block; margin-bottom: 6px; }
+}
+
+.footer {
+  margin-top: 40px; padding-top: 16px;
+  border-top: 1px solid var(--rule); color: var(--muted);
+  font-size: 12px; text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="meta">生成: 2026-10-28 21:18 ／ ダイジェスト日: 20261028</div>
+<h1>PubMed論文ダイジェスト 2026-10-28</h1>
+<div class="highlight"><h2>📋 今日のハイライト</h2><p>今週はCGMを「行動を変える道具」として使うT2D研究と、T1Dの一般集団スクリーニングの実装報告が目立った。</p><p>★ <a href="https://pubmed.ncbi.nlm.nih.gov/42935602/" target="_blank"><strong>Diabetes Obes Cardiometab CARE</strong></a> にて <a href="https://pubmed.ncbi.nlm.nih.gov/42935602/" target="_blank">Vidovicら</a>（University of Washington）が、CUT-DM試験の二次解析として、非強化インスリン療法中のラテン系T2D 119名に教育12回＋リアルタイムCGM（RT-CGM）または教育＋ブラインドCGMを行い、12週で両群とも身体活動日数が+60%、自己効力感が+1.2点改善し、食事のセルフケアはRT-CGM群で有意に大きく改善した（2.4 vs 0.8点、P=0.01）、RT-CGM使用者の97%が有益と回答したと報告した。これまでCGMのT2Dへの効果はHbA1cで語られてきたが、「見える化が行動を変える」というSyncHealthの介入理論を支える結果である。同時期に ★ <a href="https://pubmed.ncbi.nlm.nih.gov/42942253/" target="_blank"><strong>Life (Basel)</strong></a> にて <a href="https://pubmed.ncbi.nlm.nih.gov/42942253/" target="_blank">Leeら</a>（韓国・公州大学）は、isCGMを12週使ったT2D 542名でHbA1cが8.12→7.49%に下がり、脂質4項目の有意な改善はTIR>70%達成群に限られた（LDL-C -4.48 mg/dL）と報告し、TIR目標の意義を実臨床で裏づけた。</p><p>CGM指標そのものの信頼性については ★ <a href="https://pubmed.ncbi.nlm.nih.gov/42946943/" target="_blank"><strong>Diabetes Obes Metab</strong></a> にて <a href="https://pubmed.ncbi.nlm.nih.gov/42946943/" target="_blank">Faroukら</a>（Imperial College London）が、AID使用T1D成人383名でDexcom・MiniMed・Abbottの3機種のGMIと検査HbA1cを比較し、機種間の方向性差は±0.2%以内で、平均絶対差0.42-0.51%に機種差はなかった（p=0.353）と報告した。CGMの機種が混在する研究でもGMIを横並びで扱ってよい根拠になる。</p><p>一方でT1D領域では、<a href="https://pubmed.ncbi.nlm.nih.gov/42935169/" target="_blank"><strong>Diabetes Obes Metab</strong></a> にて <a href="https://pubmed.ncbi.nlm.nih.gov/42935169/" target="_blank">Berkaら</a>（チェコ・Charles University）が、EDENT1FI枠組みの全国スクリーニング「Betty」で小児人口の1%にあたる19,044例を検査し、複数自己抗体陽性率は一般集団0.39%、第一度近親者2.8%、確定102例の93%がStage 1だったと報告した。ついに欧州で一般集団スクリーニングが国家規模で動き出した形で、同じ号には<a href="https://pubmed.ncbi.nlm.nih.gov/42937021/" target="_blank">Pozzilli & Leslie</a>（<strong>Diabetes Metab Res Rev</strong>）による「成人発症T1Dに週1回基礎インスリン＋SGLT2阻害薬」という新しい治療仮説も出ている。</p><p>発症予防の領域では、★ <a href="https://pubmed.ncbi.nlm.nih.gov/42933398/" target="_blank"><strong>J Obstet Gynaecol Res</strong></a> にて 🇯🇵 <a href="https://pubmed.ncbi.nlm.nih.gov/42933398/" target="_blank">稲村ら</a>（名古屋大学ほか日本12施設）が、妊娠前1年以内にHbA1cを測った282例のうち妊娠前prediabetes 19例（6.7%）でLGA児出産のオッズが3.5倍（aOR 3.48、95%CI 1.14-10.66）、GDM発症例を除いても同様（aOR 3.49）だったと報告した。妊娠前の軽度血糖異常がGDM診断とは独立にリスクを持つことを示した日本発の報告で、症例数は少ないが着眼点は新しい。</p><p>今週の共通テーマは「CGMとTIRを血糖以外の転帰（行動・脂質・機種間の一貫性）に広げる」であり、日本人研究は名古屋大学の妊娠前prediabetes研究1件だった。</p></div>
+<p><strong>📄 PubMed論文ダイジェスト 2026年10月28日</strong></p><table><tr><td><p>検索範囲：過去7日間（2026/06/22〜 2026/06/29）<br/>ヒット件数：33件（重複除去後）<br/>内訳：A 必読 5件 / B 関連 13件 / C 参考 15件<br/>抄録未取得：0件 / 🇯🇵 日本人研究：1件</p></td></tr></table><p><strong>📊 関連度集計</strong></p><table><tr><td><p><strong>A 必読</strong></p></td><td><p><strong>B 関連</strong></p></td><td><p><strong>C 参考</strong></p></td></tr><tr><td><p>5件</p></td><td><p>13件</p></td><td><p>15件</p></td></tr></table><p><strong>🇯🇵 日本人研究フラグ</strong></p><ul><li><strong>[A] PMID 42933398 — </strong>Prepregnancy Prediabetes and Large-for-Gestational-Age Birth Independent of Gestational Diabetes Among Asian Women.</li></ul><p><strong>🩺 糖尿病発症予防</strong></p><p><strong>■ A 必読 (1件)</strong></p><div class="paper-card" data-grade="A" data-jp="true" data-pmid="42933398"><p class="paper-title"><span class="grade-badge grade-A">A</span><span class="jp-flag">🇯🇵</span><strong>[A] </strong>多施設後ろ向き研究（名古屋大学ほか日本12施設、2014-2024年）。妊娠前1年以内にHbA1c測定歴のある妊婦282例で、妊娠前の前糖尿病（prediabetes）とGDM・LGA児出産の関連を多変量ロジスティック回帰で評価 🇯🇵 PMID 42933398<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Prepregnancy Prediabetes and Large-for-Gestational-Age Birth Independent of Gestational Diabetes Among Asian Women.</em></strong></p><p>📰 J Obstet Gynaecol Res (IF —) | Inamura T, Tano S, Fujito S, Fuma K, et al. | 2026/11 | DOI: 10.1111/jog.70548</p><p>🇯🇵 妊娠前の前糖尿病（prediabetes）が周産期転帰に与える影響は十分に検討されていなかった。名古屋大学産婦人科（稲村ら）を中心とする日本国内12産科施設の多施設後ろ向き研究で、2014年1月〜2024年12月に分娩し、妊娠前1年以内にHbA1c測定歴のある女性282例を対象に、妊娠前prediabetesと妊娠糖尿病（GDM）およびLGA（large-for-gestational-age）児出産との関連を検討した。母体年齢・生殖補助医療・妊娠前BMI・初産で調整した多変量ロジスティック回帰を用いた。妊娠前prediabetesは19例（6.7%）。GDMのオッズは2倍超だったが有意ではなく（aOR 2.15、95%CI 0.53-8.66）、LGA児出産とは有意に関連した（aOR 3.48、95%CI 1.14-10.66）。GDM発症例を除いた262例（prediabetes 16例、6.1%）でもLGAとの関連は保たれた（aOR 3.49、95%CI 1.09-11.57）。アジア人女性において、妊娠前prediabetesはGDM診断の有無とは独立にLGA児出産の高いオッズと関連しており、妊娠前の血糖異常はGDM診断を超えて胎児過剰発育のリスク評価に役立つ可能性がある。症例数が少なくCIが広いため、より大規模な検証が必要。</p><table><tr><td><p>💡 関連度の理由：🇯🇵日本人対象。妊娠前の前糖尿病が周産期アウトカムに独立して関連。J Obstet Gynaecol Res</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42933398/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42933398/</a></p></div><p><strong>■ B 関連 (2件)</strong></p><div class="paper-card" data-grade="B" data-pmid="42947139"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>集団ベースコホート（上海女性健康研究、n=72,295、40-70歳）。T2D（登録時既往／追跡中発症＝時間依存曝露）と乳癌リスクをCox回帰 PMID 42947139<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Association between type 2 diabetes mellitus and breast cancer risk: results from a population-based cohort study in Chinese women.</em></strong></p><p>📰 BMC Public Health (IF —) | Tang DD, Shen QM, Li ZY, Liu DK, et al. | 2026/07/31 | DOI: 10.1186/s12889-026-28845-5</p><p>上海女性健康研究（40-70歳、n=72,295）のコホートで、T2D（登録時既往／追跡中発症＝時間依存曝露）と乳癌リスクをCox回帰で検討。追跡中央値19.08年で乳癌1,759例。T2D全体 HR 1.22（95%CI 1.05-1.43）、追跡中に発症したT2D HR 1.28（1.05-1.55）、登録時既往T2D HR 1.15（0.90-1.46）。診断後5年以内にリスクが最高（HR 4.22、95%CI 3.27-5.44）で、その後低下する軌跡を示した。治療・生活習慣の情報を含めた今後の検討が必要。</p><table><tr><td><p>💡 関連度の理由：大規模疫学だが癌リスク。BMC Public Health</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42947139/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42947139/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42932322"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>前向きコホート＋MR解析（HCHS/SOL、ノースカロライナ大学）。81種のオキシリピンと脂肪酸とT2D有病（n=15,138）・発症（n=8,548、1,376例）の関連 PMID 42932322<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Evaluating associations of oxylipin metabolites and fatty acids with incident and prevalent type 2 diabetes in the Hispanic Community Health Study/Study of Latinos (HCHS/SOL).</em></strong></p><p>📰 PLoS One (IF 2.6) | Downie CG, Highland HM, Howard AG, Alotaibi M, et al. | 2026 | DOI: 10.1371/journal.pone.0360656</p><p>ヒスパニック系コホートHCHS/SOLで、81種のオキシリピンと多価・一価・飽和脂肪酸とT2Dの横断的・前向き関連を評価し、MR-BMA（ベイズモデル平均化メンデルランダム化）で因果候補を絞り込んだ。54種が有病T2D（n=15,138、2,962例）と関連し、うち4種（アドレン酸・ジホモγリノレン酸・トリコサン酸・リグノセリン酸）はT2D発症（n=8,548、1,376例）とも関連したが、IGT調整で前2者は減弱。MR-BMAではdiHETrE系オキシリピン1種が因果的リスク因子として優先された。発症リスクより顕在化した疾患過程を反映する関連が多かった。</p><table><tr><td><p>💡 関連度の理由：代謝物とT2D発症。PLoS One</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42932322/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42932322/</a></p></div><p><strong>💉 1型糖尿病治療</strong></p><p><strong>■ A 必読 (1件)</strong></p><div class="paper-card" data-grade="A" data-pmid="42935169"><p class="paper-title"><span class="grade-badge grade-A">A</span><strong>[A] </strong>全国規模の一般集団T1Dスクリーニング（チェコ・Bettyプロジェクト、EDENT1FI枠組み）。2-17.9歳の小児19,044例（小児人口の1%）に毛細血管血で膵島自己抗体2段階検査（ELISA→LIPS/RBA）、静脈血で確定 PMID 42935169<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Population-Based Screening for Type 1 Diabetes in Czechia: Results From the First 1% of the Paediatric Population.</em></strong></p><p>📰 Diabetes Obes Metab (IF 5.7) | Berka B, Cinek O, Neuman V, Hubáčková K, et al. | 2026/10/27 | DOI: 10.1111/dom.71463</p><p>EDENT1FIは欧州で小児T1Dのスクリーニング・モニタリング・予防のロードマップを実装する取り組みで、チェコのBettyプロジェクトはその枠組みで設立された全国規模のT1Dスクリーニング事業である。家族歴の有無を問わず2〜17.9歳の小児を対象に、毛細血管血で膵島自己抗体（GAD・IA-2・ZnT8・IAA）を2段階で検出し（1次：3抗体合算シグナルのELISA、2次：EDENT1FI参照検査室でのLIPS/RBA 4種）、陽性なら静脈血で確定する。複数抗体が確定すれば早期T1Dと診断し、推定進行速度に応じた追跡を提供する。2024年4月〜2026年2月に270か所（主にプライマリケア、在宅採血4.1%）で19,044検体（小児人口の1%）を収集し、89.7%は第一度近親者にT1Dのいない一般集団だった。複数抗体陽性の有病率は一般集団0.39%（95%CI 0.30-0.51%）、第一度近親者2.8%（95%CI 2.1-3.7%）。毛細血管血陽性201例のうち102例が静脈血で早期T1Dと確定し、病期評価を終えた83例はStage 1 77例（93%）・Stage 2 4例（4.8%）・Stage 3 2例（2.4%）。さらに7例は病期評価前にStage 3を発症した。病期評価・教育受診した全家族が長期追跡に同意した。共通プロトコルによる一般集団スクリーニングの実行可能性を示し、他国の制度設計にも示唆を与える。</p><table><tr><td><p>💡 関連度の理由：T1D予防（早期発見）の国家規模実装。Diabetes Obes Metab</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42935169/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42935169/</a></p></div><p><strong>■ B 関連 (5件)</strong></p><div class="paper-card" data-grade="B" data-pmid="42946972"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>ナラティブレビュー（ブラジル）。T1Dにおけるリラグルチド・セマグルチド・チルゼパチドの補助療法としての有効性と安全性 PMID 42946972<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>GLP-1-Based Therapy in Type 1 Diabetes: Balancing Efficacy, Safety, and Patient Selection.</em></strong></p><p>📰 Diabetes Obes Metab (IF 5.7) | Rossatto T, de Andrade Oliveira R, Cardoso AM | 2026/10/27 | DOI: 10.1111/dom.71428</p><p>T1Dにおけるインスリン補助療法としてのGLP-1受容体作動薬（リラグルチド・セマグルチド）とGIP/GLP-1二重作動薬チルゼパチドのエビデンスを、過体重・肥満合併例での利益とリスクのバランスに焦点を当てて整理したナラティブレビュー。体重・インスリン必要量の減少効果は大きいが、低血糖を防ぎつつ脂肪分解・ケトン生成を抑えるだけのインスリン化を保つ必要があり、消化器症状による摂取低下・脱水がバランスを崩しうる。現行エビデンスは肥満合併成人T1Dを中心とした表現型指向アプローチ、慎重な患者選択、個別のインスリン調整、血糖・ケトン監視、構造化教育を支持する。</p><table><tr><td><p>💡 関連度の理由：T1DのGLP-1系治療。Diabetes Obes Metab</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42946972/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42946972/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42946247"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>ニーズ調査（CanScreen T1D、アルバータ大学）。カナダの一般集団T1Dスクリーニングに対する施設の受入体制を横断調査＋質的面接 PMID 42946247<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Clinician- and researcher-identified barriers and enablers to general population screening for type 1 diabetes in Canada.</em></strong></p><p>📰 Can J Diabetes (IF —) | Kammerer E, Wherrett DK, Brown T, Whitmore C, et al. | 2026/10/27 | DOI: 10.1016/j.jcjd.2026.10.005</p><p>カナダの一般集団T1Dスクリーニング（CanScreen T1D）に向けた全国ニーズ調査。横断調査と質的面接で、スクリーニングで同定された人への追跡診療・臨床試験・免疫療法提供の体制を評価した。回答18件（回答率39%）で施設間差が大きく、新規診断T1Dへの対応能力は中〜高だが、リスク保有者の支援や予防試験への参加能力は不足していた。面接ではスクリーニングへの広い支持の一方、スペース・人員不足、心理的支援の不足、公平なアクセスの課題が障壁として挙がった。全国的なスクリーニング・追跡戦略には能力と公平性への対応が不可欠。</p><table><tr><td><p>💡 関連度の理由：T1Dスクリーニング実装。Can J Diabetes</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42946247/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42946247/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42932162"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>総説（Profil、ドイツ）。週1回基礎インスリン・イコデクのPK/PD PMID 42932162<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Once-Weekly Insulin Icodec: A Review of its Pharmacokinetic and Pharmacodynamic Properties.</em></strong></p><p>📰 Clin Pharmacokinet (IF —) | Heise T, Haridas MP, Kristensen NR, Mathieu C, et al. | 2026/10/26 | DOI: 10.1007/s40262-026-01719-0</p><p>週1回投与の基礎インスリン・イコデクのPK/PDを総括した総説（独Profil、Heiseら）。アルブミン結合の強化とインスリン受容体結合の遅延により半減期は約7日で、週内の投与間隔全体を曝露が覆う。用量比例性があり、総曝露の個体内CVは5.9%、注射部位の影響なし。定常状態は3-4週で、初回50%増量で1週短縮できる。過量投与時の低血糖リスクは1日1回基礎インスリンと同等で、生理的拮抗反応も保たれる。運動・長時間絶食でも血糖指標は目標内。年齢・性・病型・人種・腎肝機能・アルブミン・抗体の臨床的影響なし。</p><table><tr><td><p>💡 関連度の理由：週1回インスリンの薬理。Clin Pharmacokinet</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42932162/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42932162/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42936974"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>横断研究（ソウル大学盆唐病院ほか韓国2施設）。19歳未満の糖尿病288例（T1D 178・T2D 110）と健常対照100例でZnT8自己抗体を測定 PMID 42936974<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Prevalence, Diagnostic Role, and Clinical Features of Zinc Transporter 8 Autoantibody in Korean Children and Adolescents With Diabetes Mellitus.</em></strong></p><p>📰 J Korean Med Sci (IF 2.3) | Shin S, Woo HA, Lee H, Lee YJ, et al. | 2026/10/26 | DOI: 10.3346/jkms.2026.41.e118</p><p>韓国2施設で2019-2025年に診断された19歳未満の糖尿病288例（T1D 178例・平均9.7歳、T2D 110例・平均14.1歳）と健常対照100例でZnT8自己抗体（カットオフ≥15 U/mL）を測定。いずれかの膵島自己抗体陽性率はT1D 94.9%・T2D 1.8%・対照5.0%。ZnT8AはT1D 74.7%・T2D 0%・対照0%で、IA-2A 74.7%、GADA 62.4%、IAA 23.6%。T1Dで単独陽性はZnT8A 2.8%、IA-2A 4.5%、GADA 3.9%、IAA 2.2%。ZnT8A陽性T1Dはより若年で思春期前が多かった。ZnT8AはT2D・対照で陰性であり、診断特異度が高い。</p><table><tr><td><p>💡 関連度の理由：アジア小児T1Dの自己抗体。J Korean Med Sci</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42936974/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42936974/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42937021"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>仮説提案論文（Queen Mary University of London、Pozzilli &amp; Leslie）。C-ペプチド保持（&gt;0.2 nmol/L）の成人発症T1Dに週1回基礎インスリン＋SGLT2阻害薬を初期治療とする提案 PMID 42937021<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>A Novel Paradigm for Adult-Onset Type 1 Diabetes: Once-Weekly Basal Insulin and SGLT-2 Inhibition to Harness Residual β-Cell Function.</em></strong></p><p>📰 Diabetes Metab Res Rev (IF —) | Pozzilli P, Leslie RD | 2026/10 | DOI: 10.1002/dmrr.70247</p><p>成人発症T1Dは小児より経過が緩徐で、多くがC-ペプチド&gt;0.2 nmol/Lを保ち、インスリン不要期間が延びることもある。Pozzilli &amp; Leslieは、C-ペプチド保持例の初期治療として週1回基礎インスリン＋SGLT2阻害薬の組み合わせを仮説生成的に提案した。週1回インスリンは（常に食事インスリン併用で）デグルデク・グラルギンと同等のHbA1c低下を示し、SGLT2阻害薬は一部地域でT1D補助療法として承認され、ボーラスなしで食後ピークを抑えうる。両者の併用試験は未実施で、18歳以上を対象とする12か月RCTのproof-of-concept試験を提唱している。</p><table><tr><td><p>💡 関連度の理由：成人T1Dの新治療パラダイム。Diabetes Metab Res Rev</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42937021/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42937021/</a></p></div><p><strong>📱 先進医療機器・デジタルヘルス</strong></p><p><strong>■ A 必読 (3件)</strong></p><div class="paper-card" data-grade="A" data-pmid="42946943"><p class="paper-title"><span class="grade-badge grade-A">A</span><strong>[A] </strong>後ろ向き実臨床解析（Imperial College London）。AID使用のT1D成人で、Dexcom・MiniMed・Abbott各センサーのGMI（従来式・更新式uGMI）と検査HbA1cの一致度を比較（90日 n=383、28日 n=375）。CVと人種で補正したANCOVA PMID 42946943<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>A Comparative Analysis Between Original and Updated Glucose Management Indicator and Glycated Haemoglobin Across Continuous Glucose Monitoring Sensors in Type 1 Diabetes.</em></strong></p><p>📰 Diabetes Obes Metab (IF 5.7) | Farouk L, Bashir B, Seese R, Avari P, et al. | 2026/10/27 | DOI: 10.1111/dom.71484</p><p>CGM由来のGMI（glucose management indicator）はHbA1cの推定に使われるが、センサー機種によって一致度が異なるかは明らかでなかった。Imperial College Londonの後ろ向き実臨床解析で、AID（自動インスリン投与）を使用するT1D成人において、Dexcom・MiniMed・Abbott各センサーで従来式GMIと更新式uGMIを算出し、検査HbA1cとの一致度を比較した。HbA1c測定前90日（n=383）と28日（n=375）のΔ(GMI-HbA1c)・Δ(uGMI-HbA1c)を、方向性差（過大／過小推定）と絶対差（一致度の大きさ）で評価し、血糖変動係数（CV）と人種で調整したANCOVAで機種間比較した。方向性差は全機種で統計学的に有意（p&lt;0.001）だが臨床的には小さく、90日の調整平均（95%CI）はΔ(GMI-HbA1c)がDexcom +0.17%（0.09-0.25）、MiniMed -0.15%（-0.28〜-0.02）、Abbott -0.08%（-0.25〜0.09）、Δ(uGMI-HbA1c)がDexcom +0.22%（0.14-0.30）、MiniMed -0.10%（-0.23〜0.02）、Abbott -0.02%（-0.19〜0.15）。平均絶対差は機種間で差がなく、GMI 0.42-0.51%（p=0.353）、uGMI 0.41-0.52%（p=0.221）。GMI/uGMIは機種によらず一貫した性能を示し、臨床的に意味のある乖離が生じた場合はセンサーメーカーに帰するのではなく個々の臨床・検査要因の文脈で解釈し、HbA1cと併用して個別化して使うべきと結論。</p><table><tr><td><p>💡 関連度の理由：CGM指標（GMI）の機種間比較。CGM解析の基礎データ。Diabetes Obes Metab</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42946943/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42946943/</a></p></div><div class="paper-card" data-grade="A" data-pmid="42942253"><p class="paper-title"><span class="grade-badge grade-A">A</span><strong>[A] </strong>後ろ向き単群pre-post研究（韓国・公州大学）。isCGMを12週使用したT2D成人542名で、TIR層別（&lt;50%／50-70%／&gt;70%）に血糖・脂質の変化を比較 PMID 42942253<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Time in Range as a Marker of Concurrent Glycemic and Lipid Improvement in Adults with Type 2 Diabetes: A Real-World Retrospective Pre-Post Study.</em></strong></p><p>📰 Life (Basel) (IF —) | Lee MJ, Seo BJ, Cho JH | 2026/10/05 | DOI: 10.3390/life16101667</p><p>CGM由来のTIR（time in range）達成が、血糖だけでなく脂質の同時改善と関連するかを検討した韓国・公州大学の後ろ向き単群pre-post研究。間歇スキャン式CGM（isCGM）を12週間使用したT2D成人542名を対象に、使用前後のHbA1c・空腹時血糖（FPG）・総コレステロール・中性脂肪・HDL-C・LDL-Cを比較し、TIRで低（&lt;50%）・中（50-70%）・目標（&gt;70%）の3群に層別した。全体でHbA1cは8.12%→7.49%、FPGは153.35→136.70 mg/dLに低下（いずれもp&lt;0.001）し、脂質4項目も有意に改善した。血糖改善は全TIR層でみられたが、脂質全項目の有意な改善はTIR&gt;70%達成群に限られ、この群では総コレステロール -4.23 mg/dL、中性脂肪 -11.12 mg/dL、LDL-C -4.48 mg/dL、HDL-C +1.34 mg/dLだった。コンセンサス目標のTIR&gt;70%の達成は血糖改善を超えた広い心代謝的利益と関連する可能性があり、TIRは日常診療でHbA1cを補完する臨床的に有用な目標となりうると結論。対照群のない後ろ向き研究で、脂質変化の絶対量は小さい点に注意。</p><table><tr><td><p>💡 関連度の理由：T2DへのCGM実臨床・TIR目標の意義。SyncHealthに近い。Life (Basel)</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42942253/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42942253/</a></p></div><div class="paper-card" data-grade="A" data-pmid="42935602"><p class="paper-title"><span class="grade-badge grade-A">A</span><strong>[A] </strong>オープンラベルRCT（CUT-DM、University of Washington）。非強化インスリン療法中の血糖コントロール不良なラテン系T2D 119名を、教育（DSMES）12回＋ブラインドCGM vs 教育＋リアルタイムCGMに1:1割付、12週の生活習慣・セルフケア・自己効力感を評価 PMID 42935602<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Behavior Modifications From CUT-DM, Including Lifestyle Modification and Self-Efficacy.</em></strong></p><p>📰 Diabetes Obes Cardiometab CARE (IF —) | Vidovic J, Vasconcelos AG, Berberian P, Comstock BA, et al. | 2026 | DOI: 10.2337/doc25-0093</p><p>CUT-DM（Diabetes Education With Real-time Continuous Glucose Monitoring）は、University of Washingtonで行われたオープンラベルRCTで、非強化インスリン療法を受ける血糖コントロール不良のラテン系T2D患者119名を対象に、糖尿病自己管理教育・支援（DSMES）とリアルタイムCGM（RT-CGM）が生活習慣・セルフケアに与える効果を検討した。全員が12回の教育セッションに参加し、教育のみ＋ブラインドCGM群と教育＋RT-CGM群に1:1で割り付けられた。12週で両群とも生活習慣が改善し、身体活動日数は+60%（95%CI 20-120%、P&lt;0.01）、10分以上歩く日数は+20%（95%CI 0-30%、P&lt;0.01）、栄養サマリースコアは+1.7（95%CI 1.0-2.3、P&lt;0.01）、自己効力感は+1.2点（95%CI 0.8-1.7、P&lt;0.01）。セルフケアは食事+1.6、運動+1.1、足のケア+1.6（いずれもP&lt;0.01）、服薬+0.6（P=0.063）。食事のセルフケアはRT-CGM群がブラインドCGM群より大きく改善した（2.4 [95%CI 1.3-3.4] vs 0.8 [95%CI -0.3〜1.9] 点、P=0.01）が、栄養スコアの改善差は有意でなかった（P=0.5）。RT-CGM参加者の97%がCGMは健康に有益だったと回答した。DSMESは生活習慣の修正を支え、教育を受けたRT-CGM使用者の有益感は高かった。CGMはT2Dの栄養・身体活動・セルフケアを高める可能性が高いが、さらなる研究が必要。</p><table><tr><td><p>💡 関連度の理由：T2DへのCGMによる行動変容RCT。SyncHealthの介入理論に直結。Diabetes Obes Cardiometab CARE</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42935602/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42935602/</a></p></div><p><strong>■ B 関連 (6件)</strong></p><div class="paper-card" data-grade="B" data-pmid="42933867"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>総説（Emory大学）。ICU成人の血糖異常管理：病態・目標・インスリン療法・CGM・AI支援の現状 PMID 42933867<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Management of dysglycemia in critically ill adults: current evidence, clinical practice and future directions.</em></strong></p><p>📰 BMJ Open Diabetes Res Care (IF 4.1) | Idrees T, Nalabolu S, Oladejo O, Elshimy G, et al. | 2026/10/26 | DOI: 10.1136/bmjdrc-2026-006533</p><p>ICU成人の最大50%が糖尿病の有無にかかわらず高血糖を呈し、糖尿病・ストレス高血糖はいずれも臓器障害・医療関連感染・人工呼吸期間延長・在院日数・死亡率の増加と関連する。ガイドラインは血糖≥180 mg/dL（10.0 mmol/L）持続で静注インスリンを開始し、140-180 mg/dL（7.8-10.0 mmol/L）を目標とすることを推奨。本総説（Emory大学）はストレス高血糖の病態、血糖異常の臨床的帰結、現行の血糖目標、インスリン療法と血糖モニタリング戦略を整理し、CGM・コンピュータ化インスリン投与アルゴリズム・AID・AI臨床判断支援など、ICU血糖管理を変えつつある新技術と特殊集団・今後の方向性を論じる。</p><table><tr><td><p>💡 関連度の理由：ICU血糖管理（院内WGに関連）。BMJ Open Diabetes Res Care</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42933867/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42933867/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42907110"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>観察研究プロトコル（Glow Up、スイス・St Gallen大学）。45歳以上BMI≥25の前糖尿病100名＋対照100名に、ブラインドCGM＋ウェアラブル4週間と画像食事記録でデジタルバイオマーカーを開発 PMID 42907110<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Glow Up: a single-centre observational study protocol to develop digital biomarkers for prediabetes screening and digital phenotyping.</em></strong></p><p>📰 BMJ Open (IF 2.3) | Brügger V, Fuchs M, Jin Q, Wirth B, et al. | 2026/10/21 | DOI: 10.1136/bmjopen-2026-119395</p><p>Glow Up（Glucose Observation and Wearable Use for Prevention）は、スイス・St Gallen大学の前向き単施設観察的症例対照研究のプロトコル。45歳以上・BMI≥25の前糖尿病100名と年齢・性をマッチした正常血糖対照100名に、ブラインドCGMと民生用・医療用ウェアラブル（活動・睡眠・HRV・心拍・皮膚温）を4週間装着させ、スマホで画像ベースの食事記録を毎日行う。登録時（T0）と約5週後（T3）にHbA1c・FPG・体格を測定し、主要評価項目はT3の血糖状態分類。副次はCGM指標・生活習慣プロファイル・食事記録遵守。ウェアラブル由来のデジタルバイオマーカーによる前糖尿病スクリーニングの実行可能性を検証する。NCT07373418。</p><table><tr><td><p>💡 関連度の理由：前糖尿病スクリーニング×CGM×ウェアラブル。BMJ Open</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42907110/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42907110/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42938254"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>ナラティブレビュー（ルーマニア）。CGMによる代謝フェノタイピングと精密栄養 PMID 42938254<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Continuous Glucose Monitoring for Metabolic Phenotyping and Precision Nutrition: Current Evidence, Clinical Applications and Future Perspectives.</em></strong></p><p>📰 Diagnostics (Basel) (IF —) | Colobatiu L, Mihaiu R, Pusta A, Mirel S | 2026/10/20 | DOI: 10.3390/diagnostics16203415</p><p>CGMは糖尿病管理を超え、食事・生活習慣への個人の血糖反応を実生活で連続評価できる代謝フェノタイピング・精密栄養の基盤技術になりつつある。2026年6月までの文献を対象とするナラティブレビュー（ルーマニア）で、食後血糖変動・計算予測・食事フィードバック・行動介入を中心に整理。食後血糖反応の個人差は大きく、CGMを食事・臨床・体格・行動・微生物叢データと統合した個別予測と栄養指導の可能性があるが、CGM由来フェノタイプと予測モデルの再現性・一般化可能性は未確立。CGM支援の栄養・行動介入はT2Dで血糖・心代謝指標を改善するが、非糖尿病者での臨床的利益のエビデンスはかなり限られる。</p><table><tr><td><p>💡 関連度の理由：CGMの非糖尿病者応用。Diagnostics (Basel)</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42938254/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42938254/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42944435"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>系統的レビュー（リヨン大学）。光学＋機械学習による非侵襲血糖測定（NIBGM）37研究 PMID 42944435<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Non-Invasive Blood Glucose Monitoring Using Machine Learning and Optical Approaches: A Systematic Literature Review and a Proposed Framework for Reproducible and Clinically Reliable Research.</em></strong></p><p>📰 Sensors (Basel) (IF —) | Ahmed SS, Noury N | 2026/10/16 | DOI: 10.3390/s26206572</p><p>光学技術＋機械学習による非侵襲血糖測定（NIBGM）の系統的レビュー（リヨン大学）。2015年9月〜2026年8月の6データベースから1,143件を抽出し、全文評価245件のうち事後の品質スコア閾値で208件を除外、37研究を採用。センシング方式・波長・サンプルサイズ・参照機器・血糖範囲・検証戦略・精度指標・人口統計変数のモデル入力への使用を整理し、著者定義の3段階ルーブリックでshortcut learning（近道学習）のリスクを評価した。有望な精度の報告は多いがCE/FDA承認品は未だ市場に出ておらず、再現性と臨床的信頼性を確保するための15項目の具体的推奨を提示。</p><table><tr><td><p>💡 関連度の理由：非侵襲血糖測定の研究基盤。Sensors (Basel)</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42944435/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42944435/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42930005"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>系統的レビュー（ブラジル）。AI支援インスリン管理システムのRCT 7件（2020-2025） PMID 42930005<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Clinical Effectiveness, Safety, and Implementation of Artificial Intelligence-Assisted Insulin Management Systems in Type 1 and Type 2 Diabetes: A Systematic Review of Randomized Controlled Trials.</em></strong></p><p>📰 Diseases (IF —) | Rodrigues VD, Catharin VMCS, Audi M, Pereira ESBM, et al. | 2026/10/13 | DOI: 10.3390/diseases14100378</p><p>AI支援インスリン管理（臨床判断支援、適応型ボーラス計算、会話型プラットフォーム、ニューラルネット人工膵臓、運動対応AID）のRCTをPRISMA準拠で系統的に検討（ブラジル）。2020-2025年の7件のRCTを採用し、異質性が大きいため叙述的統合とした。本文によれば7件中5件はT1D成人を対象で、実施国は中国・米国・英国・スペイン。例として入院T2DでのAI判断支援（iNCDSS）は専門医の用量調整に対しTIR 76.4% vs 73.6%で非劣性、推奨採用率98.9%。AI介入は重症低血糖・DKA・重篤有害事象を増やさず、全閉ループや会話型AI滴定はTIR・遵守・インスリン最適化を改善した。小規模・短期・異質性が限界で、大規模長期RCTが必要。（本文確認済）</p><table><tr><td><p>💡 関連度の理由：AI×インスリン管理。Diseases</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42930005/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42930005/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42938987"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>技術レビュー（ペルー、PRISMA準拠）。T2D早期発見・合併症リスク層別化のAIアルゴリズム47研究 PMID 42938987<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Artificial Intelligence Algorithms for Early Detection and Risk Stratification of Type 2 Diabetes Mellitus, Multimodal Bioinformatic Phenotyping, and Its Complications: A Technical Review of Classical Machine Learning, Deep Learning, and Post-Hoc Feature Attribution.</em></strong></p><p>📰 Bioengineering (Basel) (IF —) | Orozco-Romero K, Pariona-Torres J, Cornejo J | 2026/09/28 | DOI: 10.3390/bioengineering13101132</p><p>T2Dの早期発見と合併症リスク層別化に用いるAIアルゴリズムの技術レビュー（ペルー、PRISMA・PICOC準拠、Scopus検索）。255件から2025-2026年の47研究を採用。勾配ブースティング系（特にXGBoost）が主流で、ロジスティック回帰はベースライン比較として最多、AUC-ROCは0.63-0.97。AIモデルはHbA1c（前糖尿病感度49%）を一貫して上回り最高精度96.7%だが、これは高有病率の狭い集団の値。ウェアラブル＋CGM＋ゲノムの多モーダルが最高識別（AUC 内部0.96・外部0.90）。PROBAST+AIでアンカー8研究中6件が品質懸念大。多施設前向き検証・報告標準化・公平性が課題。</p><table><tr><td><p>💡 関連度の理由：AIによるT2D予測。Bioengineering (Basel)</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42938987/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42938987/</a></p></div><p><strong>📄 その他</strong></p><p><strong>📚 C 参考論文（簡略一覧）</strong></p><table><tr><td><p><strong>PMID</strong></p></td><td><p><strong>タイトル</strong></p></td><td><p><strong>雑誌</strong></p></td><td><p><strong>関連度の理由</strong></p></td></tr><tr><td><p>42944756</p></td><td><p>Donor-derived CD8+CD122+ Tregs generated in mixed donor chimeric NOD mice suppress autoreactive T cells.</p></td><td><p>J Clin Invest</p></td><td><p>基礎研究</p></td></tr><tr><td><p>42930010</p></td><td><p>Advanced Therapies for Diabetic Kidney Disease: A Critical Review of Gene-, RNA-, and Cell-Based Strategies to Address R</p></td><td><p>Diseases</p></td><td><p>合併症・総説</p></td></tr><tr><td><p>42939752</p></td><td><p>Anti-TIM-4 Monoclonal Antibody Treatment Reduces Autoreactive CD8+ T Cells and Restores Euglycemia in New-Onset Diabetic</p></td><td><p>Biomolecules</p></td><td><p>基礎研究</p></td></tr><tr><td><p>42938178</p></td><td><p>Growth and Pubertal Status in Children with Type 1 Diabetes: A Cross-Sectional Comparison with Non-Diabetic Controls.</p></td><td><p>Diagnostics (Basel)</p></td><td><p>海外単施設・弱い関連</p></td></tr><tr><td><p>42944303</p></td><td><p>Fuzzy Fault Detection and Band-Conditioned Data Quality Assessment for Sensor Streams: A Continuous Glucose Monitoring C</p></td><td><p>Sensors (Basel)</p></td><td><p>工学・単一症例</p></td></tr><tr><td><p>42941234</p></td><td><p>Tail-Risk-Aware Model Predictive Control for Hypoglycemia Mitigation in Automated Insulin Delivery.</p></td><td><p>Metabolites</p></td><td><p>シミュレーションのみ</p></td></tr><tr><td><p>42943299</p></td><td><p>Network Pharmacology-Assisted Multi-Omics Analysis of Gut Microbiota-Host Metabolic Remodeling and Hepatic HPD/GSTM3-Ass</p></td><td><p>Pharmaceuticals (Basel)</p></td><td><p>基礎研究</p></td></tr><tr><td><p>42941742</p></td><td><p>Integrative Bioinformatics Analysis Incorporating Artificial Intelligence and Machine Learning Identifies Putative Patho</p></td><td><p>Int J Mol Sci</p></td><td><p>基礎研究</p></td></tr><tr><td><p>42940069</p></td><td><p>Multi-Omics and Digital Biomarkers for Dynamic Cardiometabolic Risk Prediction.</p></td><td><p>Biomedicines</p></td><td><p>総説</p></td></tr><tr><td><p>42940055</p></td><td><p>Effects of Acute and Chronic Hyperglycemia on Neurotrophic Factors in the Gut: GDNF and NT3 Expression in Myenteric Gang</p></td><td><p>Biomedicines</p></td><td><p>基礎研究</p></td></tr><tr><td><p>42931559</p></td><td><p>Considerations for Swimmers with Type 1 Diabetes: A Narrative Review.</p></td><td><p>Sports (Basel)</p></td><td><p>総説・特殊集団</p></td></tr><tr><td><p>42939668</p></td><td><p>Immunomodulatory Effects of the Calcitriol Analog Paricalcitol.</p></td><td><p>Biomolecules</p></td><td><p>総説・弱い関連</p></td></tr><tr><td><p>42931099</p></td><td><p>Parental Feeding Practices, Child Eating Behaviours, and Their Association with Metabolic Control in Children with Type </p></td><td><p>Pediatr Rep</p></td><td><p>横断中心・弱い関連</p></td></tr><tr><td><p>42941180</p></td><td><p>Metabolomics for Athlete Monitoring: An Evidence-Readiness Framework for Contextual Validation.</p></td><td><p>Metabolites</p></td><td><p>糖尿病外</p></td></tr><tr><td><p>42946938</p></td><td><p>Effects of intranasal insulin on postoperative delirium in older patients with and without type 2 diabetes mellitus: a s</p></td><td><p>Aging Clin Exp Res</p></td><td><p>糖尿病予防外（周術期）</p></td></tr></table>
+<div class="past-list"><h3>📅 過去のダイジェスト</h3><ul><li><a href="20261027.html">2026-10-27</a></li><li><a href="20261026.html">2026-10-26</a></li><li><a href="20261025.html">2026-10-25</a></li><li><a href="20261024.html">2026-10-24</a></li><li><a href="20261023.html">2026-10-23</a></li><li><a href="20261022.html">2026-10-22</a></li><li><a href="20261021.html">2026-10-21</a></li></ul></div>
+<div class="footer">— PubMed論文ダイジェスト ／ チェックボックス＝既読、下のボタンで状態保存 —</div>
+</div>
+<div class="save-bar">
+  <button id="save-btn">📥 既読状態を保存（JSON）</button>
+  <span class="status" id="save-status">—</span>
+  <span class="status" style="margin-left:auto">20261028</span>
+</div>
+<script>
+(function() {
+  const BRIEFING_DATE = '20261028';
+  const STORAGE_KEY = 'pubmed_marks';
+  function load() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; } }
+  function save(m) { localStorage.setItem(STORAGE_KEY, JSON.stringify(m)); }
+  function apply() {
+    const marks = load();
+    document.querySelectorAll('.paper-card').forEach(card => {
+      const pmid = card.dataset.pmid;
+      const cb = card.querySelector('input[type=checkbox][data-kind="read"]');
+      if (marks[pmid] === 'read') {
+        card.dataset.state = 'read';
+        if (cb) cb.checked = true;
+      } else {
+        delete card.dataset.state;
+        if (cb) cb.checked = false;
+      }
+    });
+    updateCount();
+  }
+  function updateCount() {
+    const marks = load();
+    const total = document.querySelectorAll('.paper-card').length;
+    const read = Object.values(marks).filter(v => v === 'read').length;
+    const status = document.getElementById('save-status');
+    if (status) status.textContent = '既読:' + read + ' ／ 全' + total + '件';
+  }
+  document.addEventListener('change', e => {
+    if (e.target.type !== 'checkbox' || !e.target.dataset.kind) return;
+    const card = e.target.closest('.paper-card');
+    if (!card) return;
+    const pmid = card.dataset.pmid;
+    const marks = load();
+    if (e.target.checked) marks[pmid] = 'read';
+    else delete marks[pmid];
+    save(marks);
+    apply();
+  });
+  function downloadJSON() {
+    const marks = load();
+    const data = { saved_at: new Date().toISOString(), briefing_date: BRIEFING_DATE, marks: marks };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'pubmed_state_' + BRIEFING_DATE + '.json'; a.click();
+    URL.revokeObjectURL(url);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    apply();
+    const btn = document.getElementById('save-btn');
+    if (btn) btn.addEventListener('click', downloadJSON);
+  });
+})();
+</script>
+</body>
+</html>
