@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>PubMed論文ダイジェスト 2026-10-30</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #666;
+  --accent: #0a66c2;
+  --rule: #e0e0e0;
+  --card-bg: #f7f9fc;
+  --card-bd: #cdd5dd;
+  --shadow: rgba(0,0,0,0.06);
+  --grade-a-bg: #ffebee;
+  --grade-a-bd: #c62828;
+  --grade-b-bg: #e3f2fd;
+  --grade-b-bd: #1565c0;
+  --grade-c-bg: #f5f5f5;
+  --grade-c-bd: #757575;
+  --read-bg: #efefef;
+  --read-fg: #888;
+  --jp-bg: #fff8e1;
+  --highlight-bg: #fff8e1;
+  --highlight-bd: #ffb300;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --fg: #f0f0f0;
+    --muted: #aaa;
+    --accent: #4ea3ff;
+    --rule: #333;
+    --card-bg: #232425;
+    --card-bd: #3a3a3a;
+    --shadow: rgba(0,0,0,0.4);
+    --grade-a-bg: #4a1f24;
+    --grade-a-bd: #d35d5d;
+    --grade-b-bg: #1f2c4a;
+    --grade-b-bd: #5d8fd3;
+    --grade-c-bg: #2a2a2a;
+    --grade-c-bd: #777;
+    --read-bg: #2a2a2a;
+    --read-fg: #888;
+    --jp-bg: #3a2f00;
+    --highlight-bg: #3a2f00;
+    --highlight-bd: #c08a00;
+  }
+}
+* { box-sizing: border-box; }
+html, body {
+  margin:0; padding:0;
+  background: var(--bg); color: var(--fg);
+  font-family: -apple-system, "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 17px; line-height: 1.7;
+  -webkit-text-size-adjust: 100%;
+}
+.container { max-width: 880px; margin: 0 auto; padding: 16px 20px 100px; }
+.meta { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+h1 { font-size: 24px; margin: 8px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+h2 { font-size: 19px; margin: 28px 0 10px; padding-left: 10px; border-left: 4px solid var(--accent); }
+h3 { font-size: 17px; margin: 20px 0 8px; color: var(--accent); }
+p { margin: 8px 0; }
+a { color: var(--accent); text-decoration: none; word-break: break-all; }
+a:hover { text-decoration: underline; }
+strong { font-weight: 700; }
+
+/* ハイライト */
+.highlight {
+  background: var(--highlight-bg);
+  border-left: 5px solid var(--highlight-bd);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 20px 0 32px 0;
+  font-size: 16px;
+  line-height: 1.8;
+}
+.highlight h2 { margin-top: 0; padding-left: 0; border-left: 0; font-size: 20px; }
+.highlight p { margin: 10px 0; }
+
+/* 論文カード：タイトルのみカード装飾、本文はプレーン段落 */
+.paper-card {
+  margin: 14px 0 4px 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.paper-title {
+  background: var(--card-bg);
+  border: 1px solid var(--card-bd);
+  border-left: 5px solid var(--accent);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin: 0 0 6px 0;
+  font-weight: bold; font-size: 16px;
+}
+.paper-card[data-grade="A"] .paper-title { background: var(--grade-a-bg); border-left-color: var(--grade-a-bd); }
+.paper-card[data-grade="B"] .paper-title { background: var(--grade-b-bg); border-left-color: var(--grade-b-bd); }
+.paper-card[data-grade="C"] .paper-title { background: var(--grade-c-bg); border-left-color: var(--grade-c-bd); }
+.paper-card[data-state="read"] .paper-title { background: var(--read-bg); border-left-color: var(--read-fg); }
+.paper-card[data-state="read"] .paper-title::before { content: "✅ 既読 ／ "; color: var(--read-fg); font-weight: bold; }
+.paper-card[data-state="read"] p:not(.paper-title) { opacity: 0.55; }
+.paper-card[data-jp="true"] .paper-title { box-shadow: 0 0 0 2px var(--jp-bg); }
+.paper-card p:not(.paper-title) {
+  margin: 6px 0 6px 14px;
+  font-size: 15px;
+}
+.grade-badge {
+  display: inline-block; padding: 1px 8px; border-radius: 12px;
+  font-size: 13px; font-weight: bold; margin-right: 6px;
+}
+.grade-A { background: var(--grade-a-bd); color: white; }
+.grade-B { background: var(--grade-b-bd); color: white; }
+.grade-C { background: var(--grade-c-bd); color: white; }
+.jp-flag { background: var(--jp-bg); padding: 0 4px; border-radius: 3px; margin-right: 4px; font-size: 14px; }
+
+.paper-card p { margin: 6px 0; font-size: 15px; }
+
+/* 既読チェックボックス */
+.read-check {
+  float: right;
+  background: rgba(255,255,255,0.6);
+  padding: 2px 8px; border-radius: 4px;
+  font-size: 13px;
+}
+@media (prefers-color-scheme: dark) {
+  .read-check { background: rgba(0,0,0,0.3); }
+}
+.read-check input { vertical-align: middle; transform: scale(1.2); margin-right: 3px; }
+
+/* 過去7日 */
+.past-list {
+  margin: 32px 0 16px 0; padding: 12px 16px;
+  background: var(--card-bg); border-radius: 6px;
+}
+.past-list h3 { margin-top: 0; }
+.past-list ul { padding-left: 20px; }
+
+/* 保存バー */
+.save-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--bg); border-top: 1px solid var(--rule);
+  padding: 10px 16px; display: flex; gap: 12px; align-items: center;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.08); z-index: 100;
+}
+.save-bar button {
+  background: var(--accent); color: white; border: 0; border-radius: 6px;
+  padding: 10px 18px; font-size: 15px; font-weight: bold; cursor: pointer;
+}
+.save-bar .status { font-size: 13px; color: var(--muted); }
+
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .read-check { float: none; display: block; margin-bottom: 6px; }
+}
+
+.footer {
+  margin-top: 40px; padding-top: 16px;
+  border-top: 1px solid var(--rule); color: var(--muted);
+  font-size: 12px; text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="meta">生成: 2026-10-30 21:17 ／ ダイジェスト日: 20261030</div>
+<h1>PubMed論文ダイジェスト 2026-10-30</h1>
+<div class="highlight"><h2>📋 今日のハイライト</h2><p>今週はCGM・AIDの「実臨床と次世代技術」が並んだ週だった。</p><p>★ まず <a href="https://pubmed.ncbi.nlm.nih.gov/42952094/" target="_blank"><strong>Diabetes Technol Ther</strong></a> にて <a href="https://pubmed.ncbi.nlm.nih.gov/42952094/" target="_blank">Shinら</a>（Medtronic）が、アジア太平洋地域のMiniMed 780G使用者のCareLinkデータを集計した。豪州/NZ（n=17,382）に対し、それ以外のAPAC（n=8,360）は申告炭水化物量が約1.4倍（210.5 g vs 147.0 g）だったにもかかわらずCGM転帰は同等で、炭水化物摂取が多いほどむしろTIRは改善し、TBRは≤2.8%に収まった。日本を含む高炭水化物食の地域でもAHCLが機能することを示す大規模データである。</p><p>同時期に ★ <a href="https://pubmed.ncbi.nlm.nih.gov/42949159/" target="_blank"><strong>J Diabetes Sci Technol</strong></a> では <a href="https://pubmed.ncbi.nlm.nih.gov/42949159/" target="_blank">Al Hayekら</a>（リヤド）が、非強化療法のT2D 110名にrtCGMと構造化支援を組み合わせ、ラマダン断食中にTIRが60.8%→65.0%、CVが36.5%→32.0%へ改善し、重症低血糖は増えなかったと報告した。食事パターンの大きな変化をCGMで安全に乗り切った例で、非インスリンT2DへのCGM活用という点でSyncHealthと同型の問いである。一方で効果はラマダン後に反跳しており、介入終了後の持続が課題なのも共通している。</p><p>T1Dの精密医療では、<a href="https://pubmed.ncbi.nlm.nih.gov/42951245/" target="_blank"><strong>Diabetes Metab</strong></a> にて <a href="https://pubmed.ncbi.nlm.nih.gov/42951245/" target="_blank">Oliveiraら</a>（Luxembourg Institute of Health）がフランスSFDT1コホート2,187名の25変数（CGM指標を含む）から7つのサブ表現型を同定し、個人を投影できる「デジタルツイン」の土台を示した（独立データでの投影精度R² 0.85-0.98）。これに対し <a href="https://pubmed.ncbi.nlm.nih.gov/42953185/" target="_blank"><strong>Front Endocrinol</strong></a> の <a href="https://pubmed.ncbi.nlm.nih.gov/42953185/" target="_blank">Ibrahimら</a> は、CGMで学習した神経ネットの「ツイン」は予測精度が良くてもインスリンに無反応でありうると警告し、精度と治療反応の両方を監査する手順を提案している。デジタルツインという言葉が流行る中で、冷静な評価軸を与える対になる2報だった。</p><p>心理社会面では <a href="https://pubmed.ncbi.nlm.nih.gov/42952181/" target="_blank"><strong>Sci Diabetes Self Manag Care</strong></a> にて <a href="https://pubmed.ncbi.nlm.nih.gov/42952181/" target="_blank">Pyatakら</a>（南カリフォルニア大学）がRCT REAL-Tの12か月追跡（n=209）を報告した。遠隔作業療法は血糖には差を生まなかったが、情緒的苦痛と自己効力感の改善が1年持続した。</p><p>次世代センサーでは、★ <a href="https://pubmed.ncbi.nlm.nih.gov/42957678/" target="_blank"><strong>Nat Commun</strong></a> にて <a href="https://pubmed.ncbi.nlm.nih.gov/42957678/" target="_blank">Yaoら</a>（中山大学）が、短期の低侵襲CGMを教師にして非侵襲センサーを約2日で個別化する方法を示し、5日間でMARD約15.6%を達成した。<a href="https://pubmed.ncbi.nlm.nih.gov/42949962/" target="_blank"><strong>PNAS</strong></a> の <a href="https://pubmed.ncbi.nlm.nih.gov/42949962/" target="_blank">Qiaoら</a>（シンガポール国立大学）も歪みに強いソフトマイクロニードルでMARD 10.8%を報告しており、「貼るだけ・刺さない」方向の技術競争が続いている。</p><p>今週の共通テーマは「CGMデータの実臨床での使いこなし（AHCL・非インスリンT2D）と、その先のデジタルツイン・非侵襲センサー」。日本人研究は秋田大学のAkitaマウス基礎研究（<a href="https://pubmed.ncbi.nlm.nih.gov/42957250/" target="_blank">In Vivo</a>）1件のみで、臨床研究の日本人対象論文は無かった。</p></div>
+<p><strong>📄 PubMed論文ダイジェスト 2026年10月30日</strong></p><table><tr><td><p>検索範囲：過去7日間（2026/06/22〜 2026/06/29）<br/>ヒット件数：21件（重複除去後）<br/>内訳：A 必読 5件 / B 関連 9件 / C 参考 7件<br/>抄録未取得：0件 / 🇯🇵 日本人研究：1件</p></td></tr></table><p><strong>📊 関連度集計</strong></p><table><tr><td><p><strong>A 必読</strong></p></td><td><p><strong>B 関連</strong></p></td><td><p><strong>C 参考</strong></p></td></tr><tr><td><p>5件</p></td><td><p>9件</p></td><td><p>7件</p></td></tr></table><p><strong>🇯🇵 日本人研究フラグ</strong></p><ul><li><strong>[C] PMID 42957250 — </strong>Combined Teriparatide and Exercise Effects on Diabetic Skeletal Muscle Ultrastructure.</li></ul><p><strong>💉 1型糖尿病治療</strong></p><p><strong>■ A 必読 (1件)</strong></p><div class="paper-card" data-grade="A" data-pmid="42952181"><p class="paper-title"><span class="grade-badge grade-A">A</span><strong>[A] </strong>RCTの12か月長期追跡（University of Southern California・REAL-T）。18-30歳・T1D≥1年・HbA1c≥7.5%の若年成人209名を、6か月の遠隔作業療法（REAL-T）と通常ケアに1:1割付。CGM指標・糖尿病苦痛・QOLを0/6/12か月、HbA1cを四半期ごとに評価し線形混合効果モデルで解析 PMID 42952181<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Sustained Psychosocial Benefits of Telehealth Occupational Therapy for Young Adults With Type 1 Diabetes: Long-Term Follow-Up of the Resilient, Empowered, Active Living-Telehealth (REAL-T) Randomized Controlled Trial.</em></strong></p><p>📰 Sci Diabetes Self Manag Care (IF —) | Pyatak EA, Nnoli ND, Mo Y, Lee PJ, et al. | 2026/10/28 | DOI: 10.1177/26350106261490587</p><p>REAL-T（Resilient, Empowered, Active Living-Telehealth）介入の12か月アウトカムを検討した（University of Southern California）。T1D罹病1年以上・HbA1c≥7.5%（≥58 mmol/mol）の18〜30歳の若年成人を、6か月間の遠隔作業療法（REAL-T）と通常ケアに1:1で無作為化した。CGM指標・糖尿病苦痛・糖尿病関連QOL（DQoL）をベースライン・6・12か月で、HbA1cと仮説上の媒介因子を四半期ごとに評価し、線形混合効果モデルで縦断的な治療効果を推定した。無作為化209名のうち171名（82%）が12か月データを提供した。血糖指標には有意な群間差を認めなかった。REAL-T群は対照群より情緒的苦痛と糖尿病自己効力感の改善が大きく、未治療参加者を除いたper-protocol解析ではより強い効果を示し、DQoLと療養負担（regimen distress）も有意に改善した。遠隔作業療法介入は12か月にわたり情緒的苦痛と自己効力感に持続的な改善をもたらし、若年成人T1Dでは心理社会的アウトカムを治療の中心的標的とすべきことを支持する。血糖への効果は示せなかった点は解釈上の注意点。</p><table><tr><td><p>💡 関連度の理由：若年成人T1DのRCT長期成績（心理社会的アウトカム）。Sci Diabetes Self Manag Care</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42952181/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42952181/</a></p></div><p><strong>📱 先進医療機器・デジタルヘルス</strong></p><p><strong>■ A 必読 (4件)</strong></p><div class="paper-card" data-grade="A" data-pmid="42952094"><p class="paper-title"><span class="grade-badge grade-A">A</span><strong>[A] </strong>実臨床データ解析（Medtronic・CareLink、2020年1月〜2025年3月）。アジア太平洋地域のMiniMed 780G使用者（全年齢・CGMデータ≥10日）を、豪州/NZ（N=17,382）とそれ以外のAPAC（N=8,360）で比較し、申告総炭水化物量（TDCarb）四分位別にCGM指標を評価 PMID 42952094<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Real-World MiniMed™ 780G Advanced Hybrid Closed-Loop Performance Across the Asia-Pacific Region.</em></strong></p><p>📰 Diabetes Technol Ther (IF 6.3) | Shin JJ, Gardner D, Rama Chandran S, Vigersky RA, et al. | 2026/10/28 | DOI: 10.1177/15209156261499158</p><p>アジア太平洋（APAC）地域では1型・2型糖尿病の有病率が大きく増加しているが、MiniMed 780G（MM780G）の同地域での実臨床成績は十分に報告されていなかった。Medtronic社の解析で、2020年1月2日〜2025年3月31日にCareLinkへアップロードされた、同意済みAPACユーザー（全年齢・CGMデータ≥10日）の匿名化データを集計し、豪州/ニュージーランド（AUS/NZL）とそれ以外のAPACで比較した。推奨最適設定（ROS＝目標血糖100 mg/dL・アクティブインスリン時間2時間を≥95%の時間で使用）のサブ解析と、ユーザー申告の1日総炭水化物量（TDCarb）四分位別の評価も行った。AUS/NZL（N=17,382）と比べ、それ以外のAPAC（N=8,360）は平均TDCarbが有意に多かった（210.5 g vs 147.0 g、P&lt;0.001）にもかかわらず、CGM由来のアウトカムは臨床的に同等で良好だった。TDCarb四分位が上がるほど両地域でTIRは改善し（いずれもP&lt;0.001）、TBR（&lt;70 mg/dL）は低く保たれた（≤2.8%）。ROS使用者はTBRを変えずにさらに血糖が改善した。炭水化物摂取量の違いにかかわらず、MM780Gは実臨床のAPAC集団で有効に血糖を管理できると結論。アジアの高炭水化物食でもAHCLが機能することを示す大規模データで、日本の患者にも外挿しやすい。</p><table><tr><td><p>💡 関連度の理由：アジア太平洋のAHCL大規模実臨床データ（日本を含む地域）。Diabetes Technol Ther</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42952094/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42952094/</a></p></div><div class="paper-card" data-grade="A" data-pmid="42951245"><p class="paper-title"><span class="grade-badge grade-A">A</span><strong>[A] </strong>フランスT1Dコホート SFDT1 のベースライン横断解析（Luxembourg Institute of Health ほか）。成人T1D 2,187例の社会人口・臨床・生化学・CGM 25変数を DDRTree で低次元化し表現型マップを作成、未使用235例で再現性を検証。Steno T1 Risk Engine でCVD/ESKDリスクを算出 PMID 42951245<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Towards a digital twin for precision diabetes care: a phenotypic mapping and virtual representation of a person living with type 1 diabetes in the SFDT1 study.</em></strong></p><p>📰 Diabetes Metab (IF 4.7) | Oliveira M, Aguayo G, Canha D, Benhamou PY, et al. | 2026/10/28 | DOI: 10.1016/j.diabet.2026.101801</p><p>T1Dは臨床的に不均一だが、主要パラメータはいまだ個別に解釈されることが多い。フランスのT1DコホートSFDT1を用い、T1Dのデジタルツイン開発の第一歩として、個人レベルで使える表現型マップと仮想表現（virtual representation）の構築を目指した（Luxembourg Institute of Healthほか）。成人T1D 2,187例のベースラインデータから、社会人口学・臨床・生化学・CGMの25変数をDDRTree（樹構造学習による識別的次元削減）で低次元構造に落とし込み、未使用の235例で構造の再現性と個人の投影精度を検証した。心血管疾患（CVD）と末期腎不全（ESKD）のリスクはSteno T1 Risk Engineで算出した。解釈可能な7つのサブ表現型を同定し、良好にコントロールされたプロファイルから、血糖コントロール不良・代謝異常・社会的脆弱性・細小血管/大血管合併症の高負荷を特徴とするプロファイルまで分布した。追加参加者で独立に当てはめたマップも同様の分岐構造と臨床パターンを示し、個人の投影は正確だった（R² 0.85-0.98）。多言語アプリで表現型マップの探索、個人の投影、Stenoリスクスコアの推定ができる。この表現型マップは臨床的に意味のある不均一性を捉え、ケアチームが個々のプロファイルを位置づけて探索することを可能にし、臨床・生物学・血糖・社会的プロファイルを統合したAI対応デジタルツインと、精密糖尿病診療の臨床判断支援ツールの基盤になると結論。</p><table><tr><td><p>💡 関連度の理由：CGM変数を含むT1Dの精密医療・デジタルツイン基盤。Diabetes Metab</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42951245/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42951245/</a></p></div><div class="paper-card" data-grade="A" data-pmid="42949159"><p class="paper-title"><span class="grade-badge grade-A">A</span><strong>[A] </strong>前後比較コホート（サウジアラビア国防省保健サービス、Riyadh）。非強化療法のT2D成人110名にrtCGMと構造化ラマダン支援を行い、ラマダン前・中・後のCGM指標・GRI・TyG index・自己管理尺度（PDSMS）を比較 PMID 42949159<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Changes in CGM-Derived Glycemic Metrics and Triglyceride-Glucose Index During Ramadan in Adults With Type 2 Diabetes Using Real-Time Continuous Glucose Monitoring.</em></strong></p><p>📰 J Diabetes Sci Technol (IF 3.7) | Al Hayek A, Al Zahrani WM, Al Ajlouni M, Alotaibi HF, et al. | 2026/10/28 | DOI: 10.1177/19322968261496274</p><p>非強化療法を受けリアルタイムCGM（rtCGM）を使用するT2D成人で、ラマダン断食の前・中・後におけるCGM指標、血糖リスク指数（GRI）、TyG index、糖尿病自己管理の縦断変化を評価した。サウジアラビア・リヤドの三次糖尿病センターで管理される成人T2D 110名を対象とする ambispective 縦断コホートで、登録前データの後ろ向き収集とラマダン中の登録から断食後までの前向き追跡を組み合わせた。アウトカムはTIR70-180・TAR・血糖変動・GRI・低血糖指標などのCGM指標、TyG index、Perceived Diabetes Self-Management Scale（PDSMS）。ラマダン前と比べ、ラマダン中にTIR70-180中央値は60.8%から65.0%へ有意に上昇し（P&lt;.001）、センサー血糖中央値は187から175 mg/dLへ低下（P&lt;.001）、血糖変動も改善し（36.5% vs 32.0%、P&lt;.001）、GRIも低下した（38.0 vs 35.3、P&lt;.001）。重症低血糖曝露（TBR&lt;54）は不変（P=.358）だったが、軽度低血糖曝露はわずかに増えた。TyG indexは低下し（9.65 vs 9.55、P=.003）、PDSMSは27.0から29.0へ上昇した（P&lt;.001）。複数の血糖・代謝指標はラマダン後に断食前の水準へ戻る反跳を示した。ラマダン中の入院や治療強化はなかった。rtCGMと構造化されたラマダン支援を受けた非強化療法T2D成人では、血糖コントロール・高血糖曝露・自己管理の改善が観察され、軽度低血糖の微増はあるが重症低血糖は安定していた。食事パターンの大きな変化をCGMで安全に乗り切った例で、非インスリンT2DへのCGM活用（SyncHealthの文脈）に示唆がある。</p><table><tr><td><p>💡 関連度の理由：非強化療法T2DへのrtCGM＋構造化支援（SyncHealthと同型）。J Diabetes Sci Technol</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42949159/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42949159/</a></p></div><div class="paper-card" data-grade="A" data-pmid="42957678"><p class="paper-title"><span class="grade-badge grade-A">A</span><strong>[A] </strong>デバイス開発＋ヒト試験（中山大学）。短期の低侵襲CGM（MI-CGM）を教師として、代謝熱コンフォメーション法の非侵襲CGM（NI-CGM）をGRUベースAIで約2日間学習させ患者専用センサー化する「Adaptive Non-invasive CGM」 PMID 42957678<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Adaptive personalization for wearable non-invasive continuous glucose sensors.</em></strong></p><p>📰 Nat Commun (IF 15.7) | Yao C, Gao L, Wang X, Wang H, et al. | 2026/09/28 | DOI: 10.1038/s41467-026-74531-w</p><p>正確なCGMは糖尿病管理に不可欠だが、非侵襲CGMはなお難題である。非侵襲の生理学的信号と血糖の相関は個人差が大きく、「万人共通」センサーはしばしば失敗する。中山大学のグループは、短期の低侵襲CGM（MI-CGM：間質液グルコース測定）モジュールと、代謝熱コンフォメーション法に基づく長期の非侵襲CGM（NI-CGM）モジュールを統合した個別化「Adaptive Non-invasive CGM」法を提案した。約2日間の学習期間にNI-CGMがGRUベースのAIモデルでMI-CGMから正確なセンシングを学び、患者固有のセンサーが形成される。その後MI-CGMを外し、NI-CGMのみで長期モニタリングを行う。5日間のCGM試験でMARD（平均絶対相対差）は約15.6%だった。再現性も良好で、2か月超の間欠使用でも妥当な精度（MARD 約23.9%）を維持した。この個別化アプローチは「one-sensor-fits-all」戦略から個別化センサー開発への道筋を示し、患者間変動と非侵襲モニタリングの不正確さを軽減しうる。現行の低侵襲CGM（MARD 8-10%台）には及ばないが、非侵襲CGMで15%台は注目に値する。</p><table><tr><td><p>💡 関連度の理由：非侵襲CGMの新手法・Nat Commun。CGM研究の技術動向として必読</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42957678/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42957678/</a></p></div><p><strong>■ B 関連 (9件)</strong></p><div class="paper-card" data-grade="B" data-pmid="42949962"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>デバイス開発（シンガポール国立大学・PNAS）。ナノヒル構造の歪み耐性電極を持つソフトマイクロニードルセンサーアレイで間質液の多項目同時計測 PMID 42949962<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>A strain-insensitive multiplexed soft microneedle patch for robust interstitial fluid biomarker monitoring.</em></strong></p><p>📰 Proc Natl Acad Sci U S A (IF —) | Qiao Z, Chen S, Liu S, Madden LE, et al. | 2026/11/03 | DOI: 10.1073/pnas.2611528123</p><p>ウェアラブルマイクロニードルセンサーは間質液（ISF）のバイオマーカーをその場で解析できるが、従来設計は皮膚への追従性不足や、穿刺・体動時の電極破断で信号が不安定だった。シンガポール国立大学は、歪み耐性電極にナノヒル構造を設けて幾何学的閉じ込めで歪みを分散させるソフトマイクロニードルセンサーアレイを統合システムとして開発した。従来設計比で信号変動を1/14に低減し、複数ISFバイオマーカーの安定した同時in situ計測を可能にした。CGMとして臨床水準の精度（MARD 10.8%）を達成し、生体でグルコース・局所組織pH・温度の同期した動的変化をリアルタイムに捉えた。再利用可能な電子モジュールと使い捨てマイクロニードルアレイ（センサー面積1.8 cm²）で構成される。</p><table><tr><td><p>💡 関連度の理由：次世代微小侵襲CGM技術。Proc Natl Acad Sci U S A</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42949962/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42949962/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42953063"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>後ろ向き単施設観察研究（ミラノ大学）。MDIからSmart MDI（CGM＋スマートペン＋意思決定支援）へ移行した成人T1D 24名の1/3/6か月CGM指標。カーボカウント実施（n=12）／非実施（n=12）で探索的比較 PMID 42953063<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Six-month real-world glycemic improvement after Smart MDI system in type 1 diabetes.</em></strong></p><p>📰 J Endocr Soc (IF —) | Rossi G, Pastore I, Montefusco L, Pozzi Canova L, et al. | 2026/11 | DOI: 10.1210/jendso/bvag244</p><p>CGM・インスリンペン・意思決定支援を統合したSmart MDIシステムの実臨床データは限られる。ミラノ大学の後ろ向き単施設観察研究で、MDIからSmart MDIへ移行した成人T1D 24名のCGM指標をベースラインと1・3・6か月で解析した。主要評価項目はTIR（70-180 mg/dL）の変化。TIRは56.1±20.4%から66.3±17.5%へ漸増し（中央値変化+9.0%、P&lt;.01）、TARとTBRは有意に低下、HbA1cは7.6±1.1%から7.3±0.9%へ低下した（中央値変化-0.2%、P=.01）。カーボカウント実施群（n=12）と非実施群（n=12）の群間差は非有意だったが、非実施群でTIR・TAR・平均血糖・GMI・HbA1cの群内改善がみられ、TBRは増えなかった。構造化されていない自己管理でもSmart MDIが標準化された意思決定支援を提供しうる可能性を示す。</p><table><tr><td><p>💡 関連度の理由：Smart MDIの実臨床データ（小規模）。J Endocr Soc</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42953063/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42953063/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42956843"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>横断研究（ブラジル）。成人T1Dまたは小児の保護者2,454名で、人種/肌の色とセンサー・ポンプ使用、統一医療制度（SUS）への正式申請・承認の関連を多変量ロジスティック回帰とOaxaca-Blinder分解で評価 PMID 42956843<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Racial disparities in glucose sensor and insulin pump use and formal access through Brazil's Unified health system among people with type 1 diabetes: a cross-sectional study.</em></strong></p><p>📰 Diabetes Res Clin Pract (IF 7.4) | Assis AN, Sperandio Siqueira ME, Osterne Ribeiro VS, Moreno AM, et al. | 2026/10/29 | DOI: 10.1016/j.diabres.2026.113624</p><p>ブラジルのT1D成人および小児・青年の保護者2,454名の横断研究で、人種/肌の色とグルコースセンサー・インスリンポンプ使用、統一医療制度（SUS）への正式申請・承認との関連を多変量ロジスティック回帰と非線形Oaxaca-Blinder分解で評価した。白人と比べ褐色（Brown）はセンサー使用OR 0.76（95%CI 0.62-0.94）、ポンプ使用OR 0.75（0.59-0.94）、黒人はそれぞれ0.57（0.39-0.82）、0.53（0.32-0.84）と低かった。人種は正式申請・承認とは有意に関連せず、地理的地域が承認と強く関連した。測定した社会人口学的特性は人種によるテクノロジー使用格差の27.7-52.9%を説明した。格差は社会経済的差異を超えて持続し、アクセスの別の段階で不平等が生じている可能性がある。</p><table><tr><td><p>💡 関連度の理由：糖尿病テクノロジーの人種格差（ブラジル固有）。Diabetes Res Clin Pract</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42956843/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42956843/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42955196"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>ナラティブレビュー（カターニア大学）。65歳以上T1DにおけるAIDの有効性・安全性・使いやすさをPICOでMEDLINE検索し総括 PMID 42955196<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Automated insulin delivery in older adults with type 1 diabetes: evidence, limitations, and clinical perspectives.</em></strong></p><p>📰 Endocrine (IF 2.9) | Galeano F, Mobilia ARC, Fimognari FL, Oteri V, et al. | 2026/10/29 | DOI: 10.1007/s12020-026-04816-z</p><p>AIDシステムはT1D管理を大きく改善したが、65歳以上の高齢者は臨床試験で過小代表で、この集団固有のエビデンスは限られる。カターニア大学のナラティブレビューで、PICO枠組みでMEDLINE/PubMedを検索し、RCT・観察研究・系統的レビューに加え認知・身体機能・心理社会的要因の文献を統合した。一般集団のRCT・メタ解析はTIR（70-180 mg/dL）改善と低血糖減少を一貫して示すが、高齢者のエビデンスはまだ発展途上で、虚弱者や多疾患併存者は除外されがちである。それでも利用可能なエビデンスは、特に低血糖減少の利益が高齢集団でも保たれることを示唆する。一方、認知機能低下、身体機能の制限、介護者依存、デジタルリテラシーの低さが導入と効果的使用に影響しうる。選択された高齢者ではAIDは有効かつ概ね安全だが、集団の不均一性が大きく、日常診療での役割と適用範囲を定めるさらなる研究が必要。</p><table><tr><td><p>💡 関連度の理由：高齢T1DのAID。Endocrine</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42955196/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42955196/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42951134"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>RCT（妊娠中CGM vs 毛細血管血糖）の探索的二次解析（Oregon Health &amp; Science University）。産後CGMデータのあるGDM 79名（A1GDM 22.8%・A2GDM 77.2%）の分娩後48時間の時間別平均血糖 PMID 42951134<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Postpartum glycemic trends among people with gestational diabetes using continuous glucose monitoring.</em></strong></p><p>📰 Am J Obstet Gynecol MFM (IF —) | Hersh AR, Gallagher AC, Ward L, Huertas-Pagán C, et al. | 2026/10/28 | DOI: 10.1016/j.ajogmf.2026.102172</p><p>GDMの分娩直後の血糖変化は十分に記述されていない。Oregon Health &amp; Science Universityは、妊娠中CGM vs 毛細血管血糖のRCT（111名）の探索的二次解析として、産後CGMデータのある79名（A1GDM 22.8%・A2GDM 77.2%）で分娩後48時間の時間別平均血糖を評価し、GDM型・分娩様式・妊娠中TIR（≥90%、63-140 mg/dL）で層別した。全体として産後48時間で血糖は緩やかに低下した。A1GDMはA2GDMより、妊娠中TIR≥90%はそれ未満より48時間時点の平均血糖が低く、妊娠中の平均血糖・TARが高い群は産後48時間の平均血糖も高かった。産後血糖パラメータの差が臨床転帰と関連するかは今後の課題。</p><table><tr><td><p>💡 関連度の理由：GDMの産後血糖をCGMで記述。Am J Obstet Gynecol MFM</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42951134/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42951134/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42956568"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>アルゴリズム研究（マドリード工科大学）。治療様式・インスリン種別のサイロで連合学習（FedProx）したTemporal Fusion Transformerを患者単位で個別化。T1-DEXIで学習、OhioT1DMで外部検証 PMID 42956568<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>A personalized hybrid federated learning framework for glucose prediction in type 1 diabetes.</em></strong></p><p>📰 Artif Intell Med (IF —) | Gallardo-García C, Fuertes C, Hernando ME, Subías D, et al. | 2026/10/26 | DOI: 10.1016/j.artmed.2026.103561</p><p>T1Dの深層学習血糖予測はデータ入手性と施設間の不均一性に制約される。マドリード工科大学は、治療様式・インスリン種別で臨床的に定義したサイロ間で連合学習（FedProx）したTemporal Fusion Transformerを患者単位で個別化する「ハイブリッド連合-個別化」枠組みを提案し、処方された基礎インスリンプロファイルを既知の将来入力として組み込んだ。T1-DEXIで学習しOhioT1DMで外部検証したところ、連合学習のグローバルモデルは未知の分布で長期ホライズンの予測誤差を集中学習より低減し、集中学習は分布内で低誤差だった。患者レベル個別化後は集中学習がわずかに低い絶対誤差を示した。サイロ横断学習と患者個別化の組合せでプライバシーを守る血糖予測が実現可能で、基礎インスリン予定の入力は分布内精度を高める。</p><table><tr><td><p>💡 関連度の理由：プライバシー保護型の血糖予測（新規アルゴリズム）。Artif Intell Med</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42956568/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42956568/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42948824"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>後ろ向きコホート（米Bayhealth内分泌クリニック、2023-2024）。成人T1D/T2D 90名（CGM 63・POC 27）の3・6か月HbA1c変化 PMID 42948824<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Achieving HbA1c Reduction in Diabetes Management : A Retrospective Comparison of Glucose Monitoring Methods.</em></strong></p><p>📰 Dela J Public Health (IF —) | Sharmin E, Golden C, Mahmood E | 2026/10 | DOI: 10.32481/djph.2026.10.08</p><p>米国デラウェア州Bayhealth内分泌クリニックの単施設後ろ向きコホート（2023-2024年）で、成人T1D/T2D 90名（CGM 63名・POC指先血糖27名）の3・6か月HbA1c変化を比較した。本文によれば T1Dは3名のみで大半はT2D、CGM群は併存症・インスリン使用（77.8% vs 40.7%）・薬剤数が多く、機種はFreeStyle Libre 69.9%・Dexcom 30.1%。HbA1c低下はCGM群 -1.8% vs POC群 -1.0%（p&lt;0.001）で、CGM群は第3回受診までの薬剤減量が多かった（20.7% vs 7.4%）。ベースラインHbA1c≥9%で改善が最大（CGM -4.1%、POC -3.2%）。センサー装着率は平均84%、3か月81.9%→6か月75.4%。限界として後ろ向きEMR調査、受診間隔のばらつき、白人中心、内分泌科患者に偏った選択バイアスを著者自身が挙げている。（本文確認済）</p><table><tr><td><p>💡 関連度の理由：CGM vs SMBGの小規模実臨床。Dela J Public Health</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42948824/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42948824/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42953316"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>アルゴリズム研究（中国医学科学院）。中国語の自由記述食事記録をLLMで栄養素推定し、CGM履歴と合わせてseasonal-patch transformerで短期血糖予測。ShanghaiT1DM/T2DMコホートで評価 PMID 42953316<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Short-Term Continuous Glucose Forecasting with Large-Language-Model-Derived Nutrient Estimates from Real-World Chinese Dietary Records.</em></strong></p><p>📰 Health Data Sci (IF —) | Ma L, Hao J, Yang L, Xu X, et al. | 2026 | DOI: 10.34133/hds.0471</p><p>自由記述の食事記録、特に複雑な中国料理を血糖予測モデルに組み込むのは難しい。中国医学科学院は、中国語対応LLM 5種で自由記述食事記録を構造化栄養素特徴に変換し、CGM履歴と合わせてseasonal-patch transformerで短期血糖予測を行い、ShanghaiT1DM・ShanghaiT2DMの実臨床2コホートで全期間と食後の予測を評価した。LLM由来の栄養素推定は意味埋め込みより有意に優れ（P&lt;0.001）、最良モデルの食後3時間RMSEは34.668 mg/dL（非LLM比 -1.967 mg/dL）、全期間RMSEは27.035 mg/dL（-0.42 mg/dL）。DeepSeek-v3.1の直接推定が平均RMSE最良。予測改善は炭水化物・食物繊維・脂質の推定品質と正相関し、パッチベース符号化が最も寄与した。</p><table><tr><td><p>💡 関連度の理由：食事記録×CGMの血糖予測（新規アルゴリズム）。Health Data Sci</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42953316/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42953316/</a></p></div><div class="paper-card" data-grade="B" data-pmid="42953185"><p class="paper-title"><span class="grade-badge grade-B">B</span><strong>[B] </strong>方法論研究（ジェッダ大学）。単一患者CGMで学習したLSTM「デジタルツイン」の予測精度と治療反応の妥当性を、Manchesterコホート（解析13名）とOhioT1DM（12名）で検証 PMID 42953185<label class="read-check"><input data-kind="read" type="checkbox"/> 既読</label></p><p><strong><em>Forecasting accuracy is not enough: safety-oriented evaluation of neural digital twins prior to in-silico insulin and carbohydrate intervention in type 1 diabetes.</em></strong></p><p>📰 Front Endocrinol (Lausanne) (IF 4.6) | Ibrahim A, Banjar A, Harper S, Alarood A, et al. | 2026 | DOI: 10.3389/fendo.2026.1958918</p><p>単一患者のCGM記録で学習したニューラルネットを「デジタルツイン」として、インスリン・炭水化物の判断をin silicoで予行演習する提案が増えている。しかし直近の血糖トレンドを外挿するだけのモデルは予測誤差（RMSE）が良くてもインスリンに事実上無反応で、この欠陥はRMSEでは見えない。ジェッダ大学は、Manchesterの多モーダルコホート（解析13名）とOhioT1DM（12名）で患者別2層LSTMを厳密な時系列60/20/20分割・5シードで評価し、IOB/COB状態と二重単調性ペナルティ（インスリン↓・炭水化物↑）を加えた生理学ガイド版と比較した。精度軸では生理学なしのVanilla LSTMが最良（1ステップRMSE 7.00／5.02 mg/dL）だが、2時間ロールアウトでは学習しない持続ベースラインが60・120分で全神経モデルに勝った。段階的インスリン用量反応監査では生理学ガイド版のみが正しい方向の最も急な応答を示し（Holm補正 p=0.002／0.003）、制約を外すと誤った符号になった。精度と治療反応の妥当性は別の性質であり、両方を監査する再現可能なプロトコルを提示。</p><table><tr><td><p>💡 関連度の理由：予測精度だけでは不十分というデジタルツイン評価の提言。Front Endocrinol (Lausanne)</p></td></tr></table><p><a href="https://pubmed.ncbi.nlm.nih.gov/42953185/">🔗 PubMed: pubmed.ncbi.nlm.nih.gov/42953185/</a></p></div><p><strong>📄 その他</strong></p><p><strong>📚 C 参考論文（簡略一覧）</strong></p><table><tr><td><p><strong>PMID</strong></p></td><td><p><strong>タイトル</strong></p></td><td><p><strong>雑誌</strong></p></td><td><p><strong>関連度の理由</strong></p></td></tr><tr><td><p>42955256</p></td><td><p>Gut microbiota as a key player in diabetes mellitus: mechanisms, dysbiosis, and emerging interventions.</p></td><td><p>Folia Microbiol (Praha)</p></td><td><p>総説・基礎</p></td></tr><tr><td><p>42957008</p></td><td><p>The β-cell stress continuum: Molecular mechanisms driving diabetes progression and cellular failure.</p></td><td><p>Biochim Biophys Acta Mol Basis Dis</p></td><td><p>総説・基礎</p></td></tr><tr><td><p>42949132</p></td><td><p>Stem Cell Educator Therapy for Ex Vivo Immune Modulation of Peripheral Blood Mononuclear Cells in Patients with Long COV</p></td><td><p>J Vis Exp</p></td><td><p>糖尿病外（long COVID）</p></td></tr><tr><td><p>42952008</p></td><td><p>Experimental high blood glucose metabolically rejuvenates CD8+ T cells for improved control of tumor growth through an I</p></td><td><p>J Immunol</p></td><td><p>基礎研究・腫瘍免疫</p></td></tr><tr><td><p>42953609</p></td><td><p>Increasing Insulin Pump Use in Youth with Type 1 Diabetes While Addressing Disparities.</p></td><td><p>Pediatr Qual Saf</p></td><td><p>単施設QI・米国固有</p></td></tr><tr><td><p>42952645</p></td><td><p>GlucoSense: early diabetes risk assessment via fusion of human activity recognition and glucose prediction.</p></td><td><p>Front Digit Health</p></td><td><p>参加者6名の概念実証</p></td></tr><tr><td><p>42957250</p></td><td><p>Combined Teriparatide and Exercise Effects on Diabetic Skeletal Muscle Ultrastructure.</p></td><td><p>In Vivo</p></td><td><p>🇯🇵基礎研究（マウス）</p></td></tr></table>
+<div class="past-list"><h3>📅 過去のダイジェスト</h3><ul><li><a href="20261029.html">2026-10-29</a></li><li><a href="20261028.html">2026-10-28</a></li><li><a href="20261027.html">2026-10-27</a></li><li><a href="20261026.html">2026-10-26</a></li><li><a href="20261025.html">2026-10-25</a></li><li><a href="20261024.html">2026-10-24</a></li><li><a href="20261023.html">2026-10-23</a></li></ul></div>
+<div class="footer">— PubMed論文ダイジェスト ／ チェックボックス＝既読、下のボタンで状態保存 —</div>
+</div>
+<div class="save-bar">
+  <button id="save-btn">📥 既読状態を保存（JSON）</button>
+  <span class="status" id="save-status">—</span>
+  <span class="status" style="margin-left:auto">20261030</span>
+</div>
+<script>
+(function() {
+  const BRIEFING_DATE = '20261030';
+  const STORAGE_KEY = 'pubmed_marks';
+  function load() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; } }
+  function save(m) { localStorage.setItem(STORAGE_KEY, JSON.stringify(m)); }
+  function apply() {
+    const marks = load();
+    document.querySelectorAll('.paper-card').forEach(card => {
+      const pmid = card.dataset.pmid;
+      const cb = card.querySelector('input[type=checkbox][data-kind="read"]');
+      if (marks[pmid] === 'read') {
+        card.dataset.state = 'read';
+        if (cb) cb.checked = true;
+      } else {
+        delete card.dataset.state;
+        if (cb) cb.checked = false;
+      }
+    });
+    updateCount();
+  }
+  function updateCount() {
+    const marks = load();
+    const total = document.querySelectorAll('.paper-card').length;
+    const read = Object.values(marks).filter(v => v === 'read').length;
+    const status = document.getElementById('save-status');
+    if (status) status.textContent = '既読:' + read + ' ／ 全' + total + '件';
+  }
+  document.addEventListener('change', e => {
+    if (e.target.type !== 'checkbox' || !e.target.dataset.kind) return;
+    const card = e.target.closest('.paper-card');
+    if (!card) return;
+    const pmid = card.dataset.pmid;
+    const marks = load();
+    if (e.target.checked) marks[pmid] = 'read';
+    else delete marks[pmid];
+    save(marks);
+    apply();
+  });
+  function downloadJSON() {
+    const marks = load();
+    const data = { saved_at: new Date().toISOString(), briefing_date: BRIEFING_DATE, marks: marks };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'pubmed_state_' + BRIEFING_DATE + '.json'; a.click();
+    URL.revokeObjectURL(url);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    apply();
+    const btn = document.getElementById('save-btn');
+    if (btn) btn.addEventListener('click', downloadJSON);
+  });
+})();
+</script>
+</body>
+</html>
